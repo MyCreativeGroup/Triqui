@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataforma de Juego Triqui</title>
+<title>TRI OF TRI</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -38,6 +39,8 @@
     margin-bottom: 25px;
     font-weight: 600;
     letter-spacing: 1px;
+    text-align: center;
+    width: 100%;
   }
 
   #configuracion {
@@ -47,7 +50,7 @@
     box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
     width: 95%;
     max-width: 550px;
-    min-height: 520px; /* Ventana inicial sustancialmente más alta */
+    min-height: 520px; /* Ventana inicial 35% más alta */
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -72,7 +75,7 @@
   }
 
   .imagenes-jugadores {
-    display: none;
+    display: flex; /* Cambiado a flex para control dinámico */
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
@@ -262,7 +265,7 @@
 
   /* ===== Adaptabilidad Móvil ===== */
   @media (max-width: 480px) {
-    #pantalla-inicio h1 { font-size: 2em; }
+    #pantalla-inicio h1 { font-size: 2.4em; }
     #configuracion { min-height: 480px; padding: 20px 15px; }
     .jugador { width: 28%; }
     header { font-size: 1.1em; padding: 8px 18px; }
@@ -274,7 +277,7 @@
 <body>
 
 <div id="pantalla-inicio">
-  <h1>Plataforma de Juego Triqui</h1>
+  <h1>TRI OF TRI</h1>
   <div id="configuracion">
     <div style="width: 100%;">
       <label style="display:block; margin-bottom:12px; font-size:1.1em; color:#FFD166;">Modalidad de Juego</label>
@@ -284,7 +287,7 @@
       </select>
     </div>
 
-    <div id="imagenes-humano" class="imagenes-jugadores"></div>
+    <div id="contenedor-avatares" class="imagenes-jugadores"></div>
 
     <div style="width: 100%;">
       <button id="btn-musica">🔊 Audio</button>
@@ -330,7 +333,7 @@
   const sonidoConfeti=document.getElementById('sonido-confeti');
   const turnoTexto=document.getElementById('texto-turno');
   const fotoTurno=document.getElementById('foto-turno');
-  const imagenesHumano=document.getElementById('imagenes-humano');
+  const contenedorAvatares=document.getElementById('contenedor-avatares');
   const mensajeFinal=document.getElementById('mensaje-final');
   const tituloFinal=document.getElementById('titulo-final');
   const imagenesFinales=document.getElementById('imagenes-finales');
@@ -345,57 +348,90 @@
   let nombresJugadores={X:"Jugador 1",O:"Jugador 2"};
   let contraMaquina=true;
 
-  // Servidor Base de Producción
   const urlServidor = "https://mycreativegroup.github.io/Triqui/";
 
-  const jugadores = [
-    {nombre:"Tío",img:"https://mycreativegroup.github.io/Triqui/El tio.png"},
-    {nombre:"Chompi",img:"https://mycreativegroup.github.io/Triqui/Chompi.png"},
-    {nombre:"Pato",img:"https://mycreativegroup.github.io/Triqui/Pato.png"},
-    {nombre:"Juanis",img:"https://mycreativegroup.github.io/Triqui/Juanis.png"},
-    {nombre:"Lila",img:"https://mycreativegroup.github.io/Triqui/Lila.png"},
-    {nombre:"Pipe",img:"https://mycreativegroup.github.io/Triqui/Pipe.png"},
-    {nombre:"Tutis",img:"https://mycreativegroup.github.io/Triqui/Tutis.png"},
-    {nombre:"Emilito",img:"https://mycreativegroup.github.io/Triqui/Emilito.png"},
-    {nombre:"Ñaños",img:"https://mycreativegroup.github.io/Triqui/Nanos.png"}
+  // Listado base familiar
+  const jugadoresFamilia = [
+    {nombre:"Tío",img: urlServidor + "El tio.png"},
+    {nombre:"Chompi",img: urlServidor + "Chompi.png"},
+    {nombre:"Pato",img: urlServidor + "Pato.png"},
+    {nombre:"Juanis",img: urlServidor + "Juanis.png"},
+    {nombre:"Lila",img: urlServidor + "Lila.png"},
+    {nombre:"Pipe",img: urlServidor + "Pipe.png"},
+    {nombre:"Tutis",img: urlServidor + "Tutis.png"},
+    {nombre:"Emilito",img: urlServidor + "Emilito.png"},
+    {nombre:"Ñaños",img: urlServidor + "Nanos.png"}
   ];
 
-  jugadores.forEach(j=>{
-    const div=document.createElement('div');
-    div.classList.add('jugador');
-    const img=document.createElement('img');
-    img.src=j.img;
-    img.alt=j.nombre;
-    const p=document.createElement('p');
-    p.textContent=j.nombre;
+  // Listado base máquina
+  const jugadoresMaquina = [
+    {nombre:"Yo", img: urlServidor + "yo.jpg"},
+    {nombre:"Sistema", img: urlServidor + "circulo.png"}
+  ];
 
-    img.addEventListener('click',()=>{
-      if(!imagenesJugadores.X){
-        imagenesJugadores.X=j.img;
-        nombresJugadores.X=j.nombre;
-        img.classList.add('seleccionada-X');
-      }else if(!imagenesJugadores.O && j.img!==imagenesJugadores.X){
-        imagenesJugadores.O=j.img;
-        nombresJugadores.O=j.nombre;
-        img.classList.add('seleccionada-O');
-      }else if(img.classList.contains('seleccionada-X')){
-        imagenesJugadores.X=null;
-        nombresJugadores.X="Jugador 1";
-        img.classList.remove('seleccionada-X');
-      }else if(img.classList.contains('seleccionada-O')){
-        imagenesJugadores.O=null;
-        nombresJugadores.O="Jugador 2";
-        img.classList.remove('seleccionada-O');
+  function renderizarCatalogo() {
+    contenedorAvatares.innerHTML = "";
+    // Reseteamos selecciones internas previas para evitar bloqueos
+    imagenesJugadores = {X: null, O: null};
+    nombresJugadores = {X: "Jugador 1", O: "Jugador 2"};
+
+    const listaActual = contraMaquina ? jugadoresMaquina : jugadoresFamilia;
+
+    listaActual.forEach(j=>{
+      const div=document.createElement('div');
+      div.classList.add('jugador');
+      const img=document.createElement('img');
+      img.src=j.img;
+      img.alt=j.nombre;
+      const p=document.createElement('p');
+      p.textContent=j.nombre;
+
+      // Si es modo máquina, auto-seleccionamos visualmente ambos elementos por defecto
+      if (contraMaquina) {
+        if (j.nombre === "Yo") {
+          img.classList.add('seleccionada-X');
+          imagenesJugadores.X = j.img;
+          nombresJugadores.X = j.nombre;
+        } else {
+          img.classList.add('seleccionada-O');
+          imagenesJugadores.O = j.img;
+          nombresJugadores.O = j.nombre;
+        }
       }
-    });
 
-    div.appendChild(img); div.appendChild(p);
-    imagenesHumano.appendChild(div);
-  });
+      img.addEventListener('click',()=>{
+        if (contraMaquina) return; // En modo máquina no requiere alternar clics
+
+        if(!imagenesJugadores.X){
+          imagenesJugadores.X=j.img;
+          nombresJugadores.X=j.nombre;
+          img.classList.add('seleccionada-X');
+        }else if(!imagenesJugadores.O && j.img!==imagenesJugadores.X){
+          imagenesJugadores.O=j.img;
+          nombresJugadores.O=j.nombre;
+          img.classList.add('seleccionada-O');
+        }else if(img.classList.contains('seleccionada-X')){
+          imagenesJugadores.X=null;
+          nombresJugadores.X="Jugador 1";
+          img.classList.remove('seleccionada-X');
+        }else if(img.classList.contains('seleccionada-O')){
+          imagenesJugadores.O=null;
+          nombresJugadores.O="Jugador 2";
+          img.classList.remove('seleccionada-O');
+        }
+      });
+
+      div.appendChild(img); div.appendChild(p);
+      contenedorAvatares.appendChild(div);
+    });
+  }
+
+  // Inicializar catálogo al cargar la página
+  renderizarCatalogo();
 
   modo.addEventListener('change',()=>{
-    if(modo.value==="humano"){ imagenesHumano.style.display="flex"; contraMaquina=false; }
-    else { imagenesHumano.style.display="none"; contraMaquina=true; }
+    contraMaquina = (modo.value === "solo");
+    renderizarCatalogo();
   });
 
   btnMusica.addEventListener('click',()=>{
@@ -403,8 +439,8 @@
   });
 
   btnIniciar.addEventListener('click',()=>{
-    if(!contraMaquina && (!imagenesJugadores.X||!imagenesJugadores.O)){
-      alert("Por favor seleccione los avatares para ambos participantes.");return;
+    if(!imagenesJugadores.X || !imagenesJugadores.O){
+      alert("Por favor seleccione los avatares para continuar."); return;
     }
     pantallaInicio.style.display='none';
     juego.style.display='flex';
@@ -416,11 +452,7 @@
     tablero.innerHTML='';
     celdas=["","","","","","","","",""];
     turno='X';
-    if(contraMaquina){
-      // Imágenes direccionadas al servidor del repositorio de forma absoluta
-      imagenesJugadores={X: urlServidor + 'yo.jpg', O: urlServidor + 'circulo.png'};
-      nombresJugadores={X:'Usuario',O:'Sistema'};
-    }
+    
     actualizarTurno();
     for(let i=0;i<9;i++){
       const celda=document.createElement('div');
@@ -453,6 +485,7 @@
 
   function jugadaMaquina(){
     const vacias=celdas.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+    if(vacias.length === 0) return;
     const movimiento=vacias[Math.floor(Math.random()*vacias.length)];
     jugar(movimiento);
   }
@@ -499,6 +532,7 @@
     mensajeFinal.style.display='none';
     juego.style.display='none';
     pantallaInicio.style.display='flex';
+    renderizarCatalogo(); // Asegura refrescar el estado de los avatares seleccionados al regresar
   }
 </script>
 </body>
