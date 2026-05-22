@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,13 +8,14 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Poppins', 'Segoe UI', sans-serif;
-    background: #000000; /* Fondo negro estricto */
+    background: #000000; /* Fondo negro estricto en el inicio */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
     color: #ffffff;
+    transition: background-color 0.3s ease;
   }
 
   /* ===== Pantalla Principal ===== */
@@ -50,14 +50,14 @@
     box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
     width: 95%;
     max-width: 550px;
-    min-height: 520px; /* Ventana inicial 35% más alta */
+    min-height: 520px;
     color: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
-  select, button {
+  select, #btn-musica, #btn-iniciar {
     margin: 10px;
     padding: 12px 24px;
     font-size: 1.1em;
@@ -69,13 +69,13 @@
     transition: all 0.3s ease;
   }
 
-  button:hover {
+  #btn-iniciar:hover {
     background-color: #06D6A0;
     transform: scale(1.03);
   }
 
   .imagenes-jugadores {
-    display: flex; /* Cambiado a flex para control dinámico */
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
@@ -84,7 +84,6 @@
     width: 100%;
   }
 
-  /* Casillas de selección totalmente cuadradas */
   .jugador {
     text-align: center;
     width: 28%;
@@ -99,7 +98,7 @@
     width: 100%;
     height: 80%;
     object-fit: cover; 
-    aspect-ratio: 1 / 1; /* Forzado de simetría cuadrada */
+    aspect-ratio: 1 / 1; 
     border-radius: 12px;
     border: 3px solid transparent;
     cursor: pointer;
@@ -127,62 +126,63 @@
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Ajustado para distribuir los elementos a los extremos */
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding: 0; /* Quitamos padding para permitir elementos de lado a lado */
+    background-color: #ffffff; /* Fondo blanco en el juego */
+    color: #000000;
   }
 
   header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 1.3em;
-    margin-bottom: 20px;
-    background-color: #FFD166;
-    padding: 10px 25px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    color: #073B4C;
+    justify-content: center;
+    gap: 15px;
+    font-size: 1.4em;
+    background-color: #0A2540; /* Azul oscuro */
+    padding: 15px 20px;
+    color: #ffffff; /* Texto blanco para contrastar */
     font-weight: 600;
+    width: 100%; /* Ocupa el ancho total de la pantalla */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
   header img {
     width: 45px;
     height: 45px;
     border-radius: 8px;
-    border: 2px solid #073B4C;
+    border: 2px solid #ffffff;
     object-fit: cover;
   }
 
-  /* El tablero calcula sus dimensiones adaptativas respetando siempre la proporción cuadrada 1:1 */
   #tablero {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     aspect-ratio: 1 / 1;
-    width: 100%;
-    max-width: 82vmin; 
-    max-height: 82vmin;
-    background-color: #FFD166;
-    border: 6px solid #073B4C;
+    width: 90%;
+    max-width: 70vmin; 
+    max-height: 70vmin;
+    background-color: #0A2540; /* Bordes azul oscuro en concordancia */
+    border: 6px solid #0A2540;
     border-radius: 15px;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+    margin: 20px 0;
   }
 
-  /* Casillas de juego rigurosamente cuadradas */
   .celda {
-    border: 2px solid #F4978E;
+    border: 3px solid #ffffff; /* Separadores blancos limpios */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: #FFE9C6;
+    background: #f4f6f9;
     transition: background 0.2s;
     aspect-ratio: 1 / 1;
   }
 
-  .celda:hover { background-color: #F8CBA6; }
+  .celda:hover { background-color: #e2e8f0; }
 
   .celda img {
     width: 85%;
@@ -200,19 +200,33 @@
   }
 
   footer {
-    margin-top: 25px;
     display: flex;
-    gap: 15px;
+    width: 100%; /* Ocupa el ancho total de lado a lado */
+    gap: 0;
+    margin-top: 0;
   }
 
   footer button {
-    background: #EF476F;
+    flex: 1; /* Distribuye el espacio equitativamente */
+    margin: 0;
+    padding: 18px 10px;
+    font-size: 1.1em;
+    border-radius: 0; /* Sin bordes redondeados para el estilo de lado a lado */
+    background-color: #0A2540; /* Azul oscuro */
     color: white;
-    padding: 12px 24px;
-    border-radius: 12px;
+    font-weight: bold;
+    border-top: 1px solid rgba(255,255,255,0.1);
   }
 
-  footer button:hover { background-color: #06D6A0; }
+  footer button:hover { 
+    background-color: #11365d; 
+    transform: none; 
+  }
+
+  /* Separador visual entre los dos botones inferiores */
+  #btn-reiniciar {
+    border-right: 1px solid rgba(255,255,255,0.2);
+  }
 
   /* ===== Ventana de Resultados ===== */
   #mensaje-final {
@@ -232,7 +246,7 @@
   #mensaje-final h2 {
     font-size: 2.6em;
     margin-bottom: 20px;
-    text-shadow: 2px 2px #EF476F;
+    text-shadow: 2px 2px #118AB2;
   }
 
   #mensaje-final .imagenes-finales {
@@ -250,6 +264,14 @@
     aspect-ratio: 1 / 1;
   }
 
+  #btn-reiniciar-final, #btn-menu-final {
+    width: 80%;
+    max-width: 300px;
+    border-radius: 10px;
+    margin: 8px;
+    background-color: #0A2540;
+  }
+
   .confeti {
     position: fixed;
     width: 8px;
@@ -263,14 +285,13 @@
     to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
 
-  /* ===== Adaptabilidad Móvil ===== */
   @media (max-width: 480px) {
     #pantalla-inicio h1 { font-size: 2.4em; }
     #configuracion { min-height: 480px; padding: 20px 15px; }
-    .jugador { width: 28%; }
-    header { font-size: 1.1em; padding: 8px 18px; }
-    header img { width: 36px; height: 36px; }
-    #tablero { max-width: 88vw; max-height: 88vw; }
+    header { font-size: 1.2em; padding: 12px 15px; }
+    header img { width: 38px; height: 38px; }
+    #tablero { max-width: 85vw; max-height: 85vw; }
+    footer button { padding: 15px 5px; font-size: 1em; }
   }
 </style>
 </head>
@@ -299,7 +320,7 @@
 <div id="juego">
   <header id="turno">
     <img id="foto-turno" src="" alt="">
-    <span id="texto-turno">Turno: Jugador 1</span>
+    <span id="texto-turno">Turno actual: -</span>
   </header>
   <div id="tablero"></div>
   <footer>
@@ -321,6 +342,7 @@
 <audio id="sonido-confeti" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6dcfa2f2f2.mp3?filename=party-horn-112941.mp3"></audio>
 
 <script>
+  const body=document.body;
   const pantallaInicio=document.getElementById('pantalla-inicio');
   const juego=document.getElementById('juego');
   const tablero=document.getElementById('tablero');
@@ -347,10 +369,10 @@
   let imagenesJugadores={X:null,O:null};
   let nombresJugadores={X:"Jugador 1",O:"Jugador 2"};
   let contraMaquina=true;
+  let contadorJugadas=0; // Controla cuántas jugadas se han hecho globalmente
 
   const urlServidor = "https://mycreativegroup.github.io/Triqui/";
 
-  // Listado base familiar
   const jugadoresFamilia = [
     {nombre:"Tío",img: urlServidor + "El tio.png"},
     {nombre:"Chompi",img: urlServidor + "Chompi.png"},
@@ -363,7 +385,6 @@
     {nombre:"Ñaños",img: urlServidor + "Nanos.png"}
   ];
 
-  // Listado base máquina
   const jugadoresMaquina = [
     {nombre:"Yo", img: urlServidor + "yo.jpg"},
     {nombre:"Sistema", img: urlServidor + "circulo.png"}
@@ -371,7 +392,6 @@
 
   function renderizarCatalogo() {
     contenedorAvatares.innerHTML = "";
-    // Reseteamos selecciones internas previas para evitar bloqueos
     imagenesJugadores = {X: null, O: null};
     nombresJugadores = {X: "Jugador 1", O: "Jugador 2"};
 
@@ -386,7 +406,6 @@
       const p=document.createElement('p');
       p.textContent=j.nombre;
 
-      // Si es modo máquina, auto-seleccionamos visualmente ambos elementos por defecto
       if (contraMaquina) {
         if (j.nombre === "Yo") {
           img.classList.add('seleccionada-X');
@@ -400,7 +419,7 @@
       }
 
       img.addEventListener('click',()=>{
-        if (contraMaquina) return; // En modo máquina no requiere alternar clics
+        if (contraMaquina) return;
 
         if(!imagenesJugadores.X){
           imagenesJugadores.X=j.img;
@@ -426,7 +445,6 @@
     });
   }
 
-  // Inicializar catálogo al cargar la página
   renderizarCatalogo();
 
   modo.addEventListener('change',()=>{
@@ -444,6 +462,7 @@
     }
     pantallaInicio.style.display='none';
     juego.style.display='flex';
+    body.style.backgroundColor = "#ffffff"; // Cambia el cuerpo a blanco en juego
     iniciarJuego();
   });
 
@@ -452,6 +471,7 @@
     tablero.innerHTML='';
     celdas=["","","","","","","","",""];
     turno='X';
+    contadorJugadas = 0; 
     
     actualizarTurno();
     for(let i=0;i<9;i++){
@@ -470,30 +490,90 @@
   function jugar(i){
     if(celdas[i]!=="")return;
     celdas[i]=turno;
+    contadorJugadas++; 
     const celda=tablero.children[i];
     const img=document.createElement('img');
     img.src=imagenesJugadores[turno];
     celda.appendChild(img);
     sonidoJugada.play();
 
-    if(verificarGanador()){setTimeout(()=>mostrarMensajeFinal(turno,false),300);return;}
+    if(verificarGanador(celdas)){setTimeout(()=>mostrarMensajeFinal(turno,false),300);return;}
     if(celdas.every(c=>c!=="")){setTimeout(()=>mostrarMensajeFinal(null,true),300);return;}
+    
     turno=(turno==='X')?'O':'X';
     actualizarTurno();
-    if(contraMaquina && turno==='O') setTimeout(jugadaMaquina,500);
+    
+    if(contraMaquina && turno==='O') setTimeout(jugadaMaquinaIA, 400);
   }
 
-  function jugadaMaquina(){
-    const vacias=celdas.map((v,i)=>v===""?i:null).filter(v=>v!==null);
-    if(vacias.length === 0) return;
-    const movimiento=vacias[Math.floor(Math.random()*vacias.length)];
-    jugar(movimiento);
+  // --- LÓGICA DE INTELIGENCIA ARTIFICIAL INTELIGENTE / MINIMAX CON DEGRADACIÓN ---
+  function jugadaMaquinaIA(){
+    let movimiento;
+
+    // Si ya van 5 o más jugadas totales, hay un 50% de probabilidad de equivocarse intencionalmente
+    if(contadorJugadas >= 5 && Math.random() < 0.50) {
+      // Elige un movimiento aleatorio simple para bajar la complejidad y dar ventaja
+      const vacias = celdas.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+      movimiento = vacias[Math.floor(Math.random()*vacias.length)];
+    } else {
+      // De lo contrario, calcula el movimiento perfecto usando el algoritmo Minimax
+      let mejorPuntaje = -Infinity;
+      for(let i=0; i<9; i++) {
+        if(celdas[i] === "") {
+          celdas[i] = "O"; // Simula movimiento de la máquina
+          let puntaje = minimax(celdas, 0, false);
+          celdas[i] = ""; // Deshace simulación
+          if(puntaje > mejorPuntaje) {
+            mejorPuntaje = puntaje;
+            movimiento = i;
+          }
+        }
+      }
+    }
+    
+    if(movimiento !== undefined) jugar(movimiento);
   }
 
-  function verificarGanador(){
+  function minimax(tableroSimulado, profundidad, esMaximizador) {
+    if (verificarGanadorEspecifico(tableroSimulado, "O")) return 10 - profundidad;
+    if (verificarGanadorEspecifico(tableroSimulado, "X")) return profundidad - 10;
+    if (tableroSimulado.every(c => c !== "")) return 0;
+
+    if (esMaximizador) {
+      let mejorPuntaje = -Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (tableroSimulado[i] === "") {
+          tableroSimulado[i] = "O";
+          let puntaje = minimax(tableroSimulado, profundidad + 1, false);
+          tableroSimulado[i] = "";
+          mejorPuntaje = Math.max(puntaje, mejorPuntaje);
+        }
+      }
+      return mejorPuntaje;
+    } else {
+      let mejorPuntaje = Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (tableroSimulado[i] === "") {
+          tableroSimulado[i] = "X";
+          let puntaje = minimax(tableroSimulado, profundidad + 1, true);
+          tableroSimulado[i] = "";
+          mejorPuntaje = Math.min(puntaje, mejorPuntaje);
+        }
+      }
+      return mejorPuntaje;
+    }
+  }
+
+  function verificarGanador(t){
     const combos=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-    return combos.some(([a,b,c])=>celdas[a]&&celdas[a]===celdas[b]&&celdas[a]===celdas[c]);
+    return combos.some(([a,b,c])=>t[a]&&t[a]===t[b]&&t[a]===t[c]);
   }
+
+  function verificarGanadorEspecifico(t, jugadorSigno) {
+    const combos=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    return combos.some(([a,b,c])=>t[a]===jugadorSigno && t[b]===jugadorSigno && t[c]===jugadorSigno);
+  }
+  // ------------------------------------------------------------------------------
 
   function mostrarMensajeFinal(ganador,empate){
     mensajeFinal.style.display='flex';
@@ -532,7 +612,8 @@
     mensajeFinal.style.display='none';
     juego.style.display='none';
     pantallaInicio.style.display='flex';
-    renderizarCatalogo(); // Asegura refrescar el estado de los avatares seleccionados al regresar
+    body.style.backgroundColor = "#000000"; // Regresa el fondo a negro estricto en el menú
+    renderizarCatalogo();
   }
 </script>
 </body>
