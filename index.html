@@ -8,7 +8,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Poppins', 'Segoe UI', sans-serif;
-    background: #000000; /* Fondo negro estricto en el inicio */
+    background: #000000; /* Fondo negro estricto por defecto */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,21 +57,47 @@
     justify-content: space-between;
   }
 
-  select, #btn-musica, #btn-iniciar {
+  /* Área de escoger modalidad en color vinotinto */
+  .seccion-modalidad {
+    background-color: #581845; /* Vinotinto */
+    padding: 15px;
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  select {
+    width: calc(100% - 20px);
+    max-width: 300px;
+    display: block;
+    margin: 0 auto;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #ffa500; /* Naranja */
+    color: #000000; /* Texto Negro */
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  /* Botones de audio e iniciar de color naranja con texto blanco */
+  #btn-musica, #btn-iniciar {
     margin: 10px;
     padding: 12px 24px;
     font-size: 1.1em;
     border-radius: 10px;
     border: none;
     cursor: pointer;
-    background-color: #118AB2;
-    color: white;
+    background-color: #ffa500; /* Naranja */
+    color: #ffffff; /* Texto Blanco */
+    font-weight: bold;
     transition: all 0.3s ease;
   }
 
-  #btn-iniciar:hover {
-    background-color: #06D6A0;
+  #btn-iniciar:hover, #btn-musica:hover {
     transform: scale(1.03);
+    background-color: #e09200;
   }
 
   .imagenes-jugadores {
@@ -110,6 +136,7 @@
   .jugador img.seleccionada-X { border-color: gold; }
   .jugador img.seleccionada-O { border-color: deepskyblue; }
 
+  /* Estilos para ocultar el nombre en el modo máquina si corresponde */
   .jugador p {
     margin-top: 4px;
     font-weight: 500;
@@ -126,12 +153,12 @@
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Ajustado para distribuir los elementos a los extremos */
+    justify-content: space-between;
     width: 100%;
     height: 100%;
-    padding: 0; /* Quitamos padding para permitir elementos de lado a lado */
-    background-color: #ffffff; /* Fondo blanco en el juego */
-    color: #000000;
+    padding: 0;
+    background-color: #000000; /* Fondo del juego en negro */
+    color: #ffffff;
   }
 
   header {
@@ -140,11 +167,11 @@
     justify-content: center;
     gap: 15px;
     font-size: 1.4em;
-    background-color: #0A2540; /* Azul oscuro */
+    background-color: #ffa500; /* Botones/Zonas destacadas de color naranja */
     padding: 15px 20px;
-    color: #ffffff; /* Texto blanco para contrastar */
+    color: #000000; /* Textos de color negro */
     font-weight: 600;
-    width: 100%; /* Ocupa el ancho total de la pantalla */
+    width: 100%; /* Ocupa el ancho total */
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
@@ -152,8 +179,18 @@
     width: 45px;
     height: 45px;
     border-radius: 8px;
-    border: 2px solid #ffffff;
+    border: 2px solid #000000;
     object-fit: cover;
+  }
+
+  /* Bloque contenedor que limita el ancho del juego al tamaño del tablero */
+  .contenedor-tablero-controles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 70vmin;
+    margin: auto 0;
   }
 
   #tablero {
@@ -161,23 +198,21 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     aspect-ratio: 1 / 1;
-    width: 90%;
-    max-width: 70vmin; 
-    max-height: 70vmin;
-    background-color: #0A2540; /* Bordes azul oscuro en concordancia */
-    border: 6px solid #0A2540;
+    width: 100%; /* Toma el ancho total del contenedor asignado */
+    background-color: #ffa500; /* Bordes naranja */
+    border: 6px solid #ffa500;
     border-radius: 15px;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
-    margin: 20px 0;
+    box-shadow: 0 12px 28px rgba(255,255,255,0.05);
+    margin-bottom: 20px;
   }
 
   .celda {
-    border: 3px solid #ffffff; /* Separadores blancos limpios */
+    border: 3px solid #000000; /* Separadores negros */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: #f4f6f9;
+    background: #ffffff; /* Cada jugada/casilla queda en fondo blanco */
     transition: background 0.2s;
     aspect-ratio: 1 / 1;
   }
@@ -199,33 +234,35 @@
     to { opacity: 1; transform: scale(1); }
   }
 
+  /* Los botones inferiores ahora solo ocupan el ancho del tablero */
   footer {
     display: flex;
-    width: 100%; /* Ocupa el ancho total de lado a lado */
+    width: 100%;
     gap: 0;
-    margin-top: 0;
+    border-radius: 10px;
+    overflow: hidden;
   }
 
   footer button {
-    flex: 1; /* Distribuye el espacio equitativamente */
+    flex: 1;
     margin: 0;
     padding: 18px 10px;
     font-size: 1.1em;
-    border-radius: 0; /* Sin bordes redondeados para el estilo de lado a lado */
-    background-color: #0A2540; /* Azul oscuro */
-    color: white;
+    border: none;
+    border-radius: 0;
+    background-color: #ffa500; /* Todos los botones de color naranja */
+    color: #000000; /* Textos de color negro */
     font-weight: bold;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    transition: background-color 0.2s;
   }
 
   footer button:hover { 
-    background-color: #11365d; 
-    transform: none; 
+    background-color: #e09200; 
   }
 
-  /* Separador visual entre los dos botones inferiores */
   #btn-reiniciar {
-    border-right: 1px solid rgba(255,255,255,0.2);
+    border-right: 1px solid rgba(0,0,0,0.15);
   }
 
   /* ===== Ventana de Resultados ===== */
@@ -233,7 +270,7 @@
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.92);
+    background: rgba(0,0,0,0.95);
     display: none;
     flex-direction: column;
     align-items: center;
@@ -246,7 +283,17 @@
   #mensaje-final h2 {
     font-size: 2.6em;
     margin-bottom: 20px;
-    text-shadow: 2px 2px #118AB2;
+    line-height: 1.4;
+  }
+
+  /* Nombre del ganador formateado en otra línea y en mayúscula */
+  #nombre-ganador-linea {
+    display: block;
+    font-size: 1.2em;
+    color: #ffa500;
+    font-weight: bold;
+    margin-top: 10px;
+    text-transform: uppercase;
   }
 
   #mensaje-final .imagenes-finales {
@@ -259,7 +306,7 @@
     width: 110px;
     height: 110px;
     border-radius: 15px;
-    border: 3px solid white;
+    border: 3px solid #ffa500;
     object-fit: cover;
     aspect-ratio: 1 / 1;
   }
@@ -269,7 +316,17 @@
     max-width: 300px;
     border-radius: 10px;
     margin: 8px;
-    background-color: #0A2540;
+    padding: 14px;
+    font-size: 1.1em;
+    background-color: #ffa500; /* Color naranja */
+    color: #000000; /* Texto negro */
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+  }
+
+  #btn-reiniciar-final:hover, #btn-menu-final:hover {
+    background-color: #e09200;
   }
 
   .confeti {
@@ -290,7 +347,7 @@
     #configuracion { min-height: 480px; padding: 20px 15px; }
     header { font-size: 1.2em; padding: 12px 15px; }
     header img { width: 38px; height: 38px; }
-    #tablero { max-width: 85vw; max-height: 85vw; }
+    .contenedor-tablero-controles { max-width: 85vw; }
     footer button { padding: 15px 5px; font-size: 1em; }
   }
 </style>
@@ -300,9 +357,9 @@
 <div id="pantalla-inicio">
   <h1>TRI OF TRI</h1>
   <div id="configuracion">
-    <div style="width: 100%;">
-      <label style="display:block; margin-bottom:12px; font-size:1.1em; color:#FFD166;">Modalidad de Juego</label>
-      <select id="modo" style="width: calc(100% - 20px); max-width: 300px; display:block; margin: 0 auto;">
+    <div class="seccion-modalidad">
+      <label style="display:block; margin-bottom:12px; font-size:1.1em; color:#ffffff; font-weight: bold;">Modalidad de Juego</label>
+      <select id="modo">
         <option value="solo">Individual (vs. Máquina)</option>
         <option value="humano">Multijugador Familiar</option>
       </select>
@@ -311,8 +368,8 @@
     <div id="contenedor-avatares" class="imagenes-jugadores"></div>
 
     <div style="width: 100%;">
-      <button id="btn-musica">🔊 Audio</button>
-      <button id="btn-iniciar" style="background-color: #06D6A0; color:#073B4C; font-weight:bold;">Iniciar Partida</button>
+      <button id="btn-musica">Audio</button>
+      <button id="btn-iniciar">Iniciar Partida</button>
     </div>
   </div>
 </div>
@@ -322,18 +379,21 @@
     <img id="foto-turno" src="" alt="">
     <span id="texto-turno">Turno actual: -</span>
   </header>
-  <div id="tablero"></div>
-  <footer>
-    <button id="btn-reiniciar">🔁 Reiniciar</button>
-    <button id="btn-menu">🏠 Menú Principal</button>
-  </footer>
+  
+  <div class="contenedor-tablero-controles">
+    <div id="tablero"></div>
+    <footer>
+      <button id="btn-reiniciar">Reiniciar</button>
+      <button id="btn-menu">Menú Principal</button>
+    </footer>
+  </div>
 </div>
 
 <div id="mensaje-final">
   <h2 id="titulo-final"></h2>
   <div class="imagenes-finales" id="imagenes-finales"></div>
-  <button id="btn-reiniciar-final">🔁 Jugar de nuevo</button>
-  <button id="btn-menu-final">🏠 Volver al menú</button>
+  <button id="btn-reiniciar-final">Jugar de nuevo</button>
+  <button id="btn-menu-final">Volver al menú</button>
 </div>
 
 <audio id="musica" src="https://mycreativegroup.github.io/Triqui/music.mp3" loop></audio>
@@ -369,7 +429,7 @@
   let imagenesJugadores={X:null,O:null};
   let nombresJugadores={X:"Jugador 1",O:"Jugador 2"};
   let contraMaquina=true;
-  let contadorJugadas=0; // Controla cuántas jugadas se han hecho globalmente
+  let contadorJugadas=0; 
 
   const urlServidor = "https://mycreativegroup.github.io/Triqui/";
 
@@ -392,8 +452,17 @@
 
   function renderizarCatalogo() {
     contenedorAvatares.innerHTML = "";
-    imagenesJugadores = {X: null, O: null};
-    nombresJugadores = {X: "Jugador 1", O: "Jugador 2"};
+    
+    if (!contraMaquina) {
+      imagenesJugadores = {X: null, O: null};
+      nombresJugadores = {X: "Jugador 1", O: "Jugador 2"};
+    } else {
+      // Por defecto en vs máquina asignamos "Yo" a X y "Sistema" a O
+      imagenesJugadores.X = jugadoresMaquina[0].img;
+      nombresJugadores.X = "Yo";
+      imagenesJugadores.O = jugadoresMaquina[1].img;
+      nombresJugadores.O = "Sistema";
+    }
 
     const listaActual = contraMaquina ? jugadoresMaquina : jugadoresFamilia;
 
@@ -403,46 +472,80 @@
       const img=document.createElement('img');
       img.src=j.img;
       img.alt=j.nombre;
-      const p=document.createElement('p');
-      p.textContent=j.nombre;
+      
+      const p=document.createElement('img'); // Se mantendrá para estructurar espacio o texto alterno
+      const parrafoTexto=document.createElement('p');
+      parrafoTexto.textContent=j.nombre;
 
       if (contraMaquina) {
-        if (j.nombre === "Yo") {
+        // En modo máquina no mostramos nombres debajo de las imágenes
+        parrafoTexto.style.display = 'none';
+        
+        // El usuario puede elegir libremente qué figura usar asignándose a "X"
+        if (imagenesJugadores.X === j.img) {
           img.classList.add('seleccionada-X');
-          imagenesJugadores.X = j.img;
-          nombresJugadores.X = j.nombre;
-        } else {
-          img.classList.add('seleccionada-O');
-          imagenesJugadores.O = j.img;
-          nombresJugadores.O = j.nombre;
         }
+
+        img.addEventListener('click', () => {
+          // Remover selección previa
+          Array.from(contenedorAvatares.querySelectorAll('img')).forEach(i => i.classList.remove('seleccionada-X', 'seleccionada-O'));
+          
+          // El usuario toma la figura seleccionada
+          imagenesJugadores.X = j.img;
+          nombresJugadores.X = "Yo";
+          img.classList.add('seleccionada-X');
+
+          // La máquina toma la otra figura disponible automáticamente
+          const otraFigura = jugadoresMaquina.find(m => m.img !== j.img);
+          imagenesJugadores.O = otraFigura.img;
+          nombresJugadores.O = "Sistema";
+          
+          // Buscar el elemento visual correspondiente a la máquina para marcarlo sutilmente si se desea
+          const todasLasImgs = contenedorAvatares.querySelectorAll('.jugador img:first-child');
+          todasLasImgs.forEach(imgElement => {
+            if(imgElement.src === otraFigura.img) {
+              imgElement.classList.add('seleccionada-O');
+            }
+          });
+        });
+
+      } else {
+        // Modo multijugador familiar (conserva nombres y selección alterna)
+        img.addEventListener('click',()=>{
+          if(!imagenesJugadores.X){
+            imagenesJugadores.X=j.img;
+            nombresJugadores.X=j.nombre;
+            img.classList.add('seleccionada-X');
+          }else if(!imagenesJugadores.O && j.img!==imagenesJugadores.X){
+            imagenesJugadores.O=j.img;
+            nombresJugadores.O=j.nombre;
+            img.classList.add('seleccionada-O');
+          }else if(img.classList.contains('seleccionada-X')){
+            imagenesJugadores.X=null;
+            nombresJugadores.X="Jugador 1";
+            img.classList.remove('seleccionada-X');
+          }else if(img.classList.contains('seleccionada-O')){
+            imagenesJugadores.O=null;
+            nombresJugadores.O="Jugador 2";
+            img.classList.remove('seleccionada-O');
+          }
+        });
       }
 
-      img.addEventListener('click',()=>{
-        if (contraMaquina) return;
-
-        if(!imagenesJugadores.X){
-          imagenesJugadores.X=j.img;
-          nombresJugadores.X=j.nombre;
-          img.classList.add('seleccionada-X');
-        }else if(!imagenesJugadores.O && j.img!==imagenesJugadores.X){
-          imagenesJugadores.O=j.img;
-          nombresJugadores.O=j.nombre;
-          img.classList.add('seleccionada-O');
-        }else if(img.classList.contains('seleccionada-X')){
-          imagenesJugadores.X=null;
-          nombresJugadores.X="Jugador 1";
-          img.classList.remove('seleccionada-X');
-        }else if(img.classList.contains('seleccionada-O')){
-          imagenesJugadores.O=null;
-          nombresJugadores.O="Jugador 2";
-          img.classList.remove('seleccionada-O');
-        }
-      });
-
-      div.appendChild(img); div.appendChild(p);
+      div.appendChild(img); 
+      div.appendChild(parrafoTexto);
       contenedorAvatares.appendChild(div);
     });
+
+    // Forzar visualmente el recuadro O en el modo contra máquina inicial
+    if (contraMaquina) {
+      const todasLasImgs = contenedorAvatares.querySelectorAll('.jugador img:first-child');
+      todasLasImgs.forEach(imgElement => {
+        if(imgElement.src === imagenesJugadores.O) {
+          imgElement.classList.add('seleccionada-O');
+        }
+      });
+    }
   }
 
   renderizarCatalogo();
@@ -462,7 +565,7 @@
     }
     pantallaInicio.style.display='none';
     juego.style.display='flex';
-    body.style.backgroundColor = "#ffffff"; // Cambia el cuerpo a blanco en juego
+    body.style.backgroundColor = "#000000"; /* Asegura fondo negro en juego */
     iniciarJuego();
   });
 
@@ -506,23 +609,19 @@
     if(contraMaquina && turno==='O') setTimeout(jugadaMaquinaIA, 400);
   }
 
-  // --- LÓGICA DE INTELIGENCIA ARTIFICIAL INTELIGENTE / MINIMAX CON DEGRADACIÓN ---
   function jugadaMaquinaIA(){
     let movimiento;
 
-    // Si ya van 5 o más jugadas totales, hay un 50% de probabilidad de equivocarse intencionalmente
     if(contadorJugadas >= 5 && Math.random() < 0.50) {
-      // Elige un movimiento aleatorio simple para bajar la complejidad y dar ventaja
       const vacias = celdas.map((v,i)=>v===""?i:null).filter(v=>v!==null);
       movimiento = vacias[Math.floor(Math.random()*vacias.length)];
     } else {
-      // De lo contrario, calcula el movimiento perfecto usando el algoritmo Minimax
       let mejorPuntaje = -Infinity;
       for(let i=0; i<9; i++) {
         if(celdas[i] === "") {
-          celdas[i] = "O"; // Simula movimiento de la máquina
+          celdas[i] = "O"; 
           let puntaje = minimax(celdas, 0, false);
-          celdas[i] = ""; // Deshace simulación
+          celdas[i] = ""; 
           if(puntaje > mejorPuntaje) {
             mejorPuntaje = puntaje;
             movimiento = i;
@@ -573,16 +672,16 @@
     const combos=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     return combos.some(([a,b,c])=>t[a]===jugadorSigno && t[b]===jugadorSigno && t[c]===jugadorSigno);
   }
-  // ------------------------------------------------------------------------------
 
   function mostrarMensajeFinal(ganador,empate){
     mensajeFinal.style.display='flex';
     imagenesFinales.innerHTML='';
     if(empate){
-      tituloFinal.textContent='Partida Finalizada: Empate';
+      tituloFinal.innerHTML='Partida Finalizada: <span id="nombre-ganador-linea">EMPATE</span>';
       imagenesFinales.innerHTML=`<img src="${imagenesJugadores.X}"><img src="${imagenesJugadores.O}">`;
     }else{
-      tituloFinal.textContent=`Victoria para: ${nombresJugadores[ganador]}`;
+      // Se modifica "Victoria para:" por "Y el ganador es:" moviendo el nombre del ganador a otra línea en mayúscula
+      tituloFinal.innerHTML=`Y el ganador es: <span id="nombre-ganador-linea">${nombresJugadores[ganador]}</span>`;
       imagenesFinales.innerHTML=`<img src="${imagenesJugadores[ganador]}">`;
       sonidoVictoria.play();
       sonidoConfeti.play();
@@ -612,7 +711,7 @@
     mensajeFinal.style.display='none';
     juego.style.display='none';
     pantallaInicio.style.display='flex';
-    body.style.backgroundColor = "#000000"; // Regresa el fondo a negro estricto en el menú
+    body.style.backgroundColor = "#000000"; 
     renderizarCatalogo();
   }
 </script>
