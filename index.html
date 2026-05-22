@@ -50,7 +50,7 @@
     box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
     width: 95%;
     max-width: 550px;
-    min-height: 520px;
+    min-height: 460px;
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -81,10 +81,10 @@
     transition: all 0.3s ease;
   }
 
-  /* Botones de audio e iniciar de color naranja con texto blanco */
-  #btn-musica, #btn-iniciar {
-    margin: 10px;
-    padding: 12px 24px;
+  /* Botón iniciar de color naranja con texto blanco */
+  #btn-iniciar {
+    margin: 10px auto;
+    padding: 12px 35px;
     font-size: 1.1em;
     border-radius: 10px;
     border: none;
@@ -93,9 +93,10 @@
     color: #ffffff; /* Texto Blanco */
     font-weight: bold;
     transition: all 0.3s ease;
+    display: block;
   }
 
-  #btn-iniciar:hover, #btn-musica:hover {
+  #btn-iniciar:hover {
     transform: scale(1.03);
     background-color: #e09200;
   }
@@ -133,10 +134,15 @@
   }
 
   .jugador img:hover { transform: scale(1.05); }
+  
+  /* Bordes específicos solicitados */
+  .borde-vinotinto { border-color: #581845 !important; }
+  .borde-naranja { border-color: #ffa500 !important; }
+
+  /* Estilos para multijugador familiar clásico */
   .jugador img.seleccionada-X { border-color: gold; }
   .jugador img.seleccionada-O { border-color: deepskyblue; }
 
-  /* Estilos para ocultar el nombre en el modo máquina si corresponde */
   .jugador p {
     margin-top: 4px;
     font-weight: 500;
@@ -167,7 +173,7 @@
     justify-content: center;
     gap: 15px;
     font-size: 1.4em;
-    background-color: #ffa500; /* Botones/Zonas destacadas de color naranja */
+    background-color: #ffa500; /* Zonas destacadas de color naranja */
     padding: 15px 20px;
     color: #000000; /* Textos de color negro */
     font-weight: 600;
@@ -198,7 +204,7 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     aspect-ratio: 1 / 1;
-    width: 100%; /* Toma el ancho total del contenedor asignado */
+    width: 100%;
     background-color: #ffa500; /* Bordes naranja */
     border: 6px solid #ffa500;
     border-radius: 15px;
@@ -212,7 +218,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: #ffffff; /* Cada jugada/casilla queda en fondo blanco */
+    background: #ffffff; /* Cada jugada queda en fondo blanco */
     transition: background 0.2s;
     aspect-ratio: 1 / 1;
   }
@@ -234,7 +240,7 @@
     to { opacity: 1; transform: scale(1); }
   }
 
-  /* Los botones inferiores ahora solo ocupan el ancho del tablero */
+  /* Los botones inferiores ahora integran el control de audio en medio */
   footer {
     display: flex;
     width: 100%;
@@ -243,26 +249,42 @@
     overflow: hidden;
   }
 
-  footer button {
-    flex: 1;
+  footer button, footer div.btn-audio-juego {
     margin: 0;
     padding: 18px 10px;
     font-size: 1.1em;
     border: none;
     border-radius: 0;
-    background-color: #ffa500; /* Todos los botones de color naranja */
-    color: #000000; /* Textos de color negro */
+    background-color: #ffa500; /* Todos los elementos de color naranja */
+    color: #000000; /* Textos/Iconos de color negro */
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  footer button:hover { 
+  footer button {
+    flex: 2; /* Los botones de texto toman más espacio */
+  }
+
+  footer div.btn-audio-juego {
+    flex: 1; /* El botón del ícono central es más compacto */
+    font-size: 1.3em;
+    user-select: none;
+  }
+
+  footer button:hover, footer div.btn-audio-juego:hover { 
     background-color: #e09200; 
   }
 
   #btn-reiniciar {
-    border-right: 1px solid rgba(0,0,0,0.15);
+    border-right: 1px solid rgba(0,0,0,0.2);
+  }
+  
+  .btn-audio-juego {
+    border-right: 1px solid rgba(0,0,0,0.2);
   }
 
   /* ===== Ventana de Resultados ===== */
@@ -286,7 +308,6 @@
     line-height: 1.4;
   }
 
-  /* Nombre del ganador formateado en otra línea y en mayúscula */
   #nombre-ganador-linea {
     display: block;
     font-size: 1.2em;
@@ -318,8 +339,8 @@
     margin: 8px;
     padding: 14px;
     font-size: 1.1em;
-    background-color: #ffa500; /* Color naranja */
-    color: #000000; /* Texto negro */
+    background-color: #ffa500;
+    color: #000000;
     font-weight: bold;
     border: none;
     cursor: pointer;
@@ -344,15 +365,16 @@
 
   @media (max-width: 480px) {
     #pantalla-inicio h1 { font-size: 2.4em; }
-    #configuracion { min-height: 480px; padding: 20px 15px; }
+    #configuracion { min-height: 420px; padding: 20px 15px; }
     header { font-size: 1.2em; padding: 12px 15px; }
     header img { width: 38px; height: 38px; }
     .contenedor-tablero-controles { max-width: 85vw; }
     footer button { padding: 15px 5px; font-size: 1em; }
+    footer div.btn-audio-juego { padding: 15px 5px; font-size: 1.1em; }
   }
 </style>
 </head>
-<body>
+<body onclick="intentarAutoplayMusica()" ontouchstart="intentarAutoplayMusica()">
 
 <div id="pantalla-inicio">
   <h1>TRI OF TRI</h1>
@@ -360,15 +382,14 @@
     <div class="seccion-modalidad">
       <label style="display:block; margin-bottom:12px; font-size:1.1em; color:#ffffff; font-weight: bold;">Modalidad de Juego</label>
       <select id="modo">
-        <option value="solo">Solito</option>
-        <option value="humano">Con el socio</option>
+        <option value="solo">Individual (vs. Máquina)</option>
+        <option value="humano">Multijugador Familiar</option>
       </select>
     </div>
 
     <div id="contenedor-avatares" class="imagenes-jugadores"></div>
 
     <div style="width: 100%;">
-      <button id="btn-musica">Audio</button>
       <button id="btn-iniciar">Iniciar Partida</button>
     </div>
   </div>
@@ -384,6 +405,7 @@
     <div id="tablero"></div>
     <footer>
       <button id="btn-reiniciar">Reiniciar</button>
+      <div id="control-audio-juego" class="btn-audio-juego">🔊</div>
       <button id="btn-menu">Menú Principal</button>
     </footer>
   </div>
@@ -392,7 +414,7 @@
 <div id="mensaje-final">
   <h2 id="titulo-final"></h2>
   <div class="imagenes-finales" id="imagenes-finales"></div>
-  <button id="btn-reiniciar-final">¿otro o miedo?</button>
+  <button id="btn-reiniciar-final">Jugar de nuevo</button>
   <button id="btn-menu-final">Volver al menú</button>
 </div>
 
@@ -408,7 +430,7 @@
   const tablero=document.getElementById('tablero');
   const modo=document.getElementById('modo');
   const btnIniciar=document.getElementById('btn-iniciar');
-  const btnMusica=document.getElementById('btn-musica');
+  const controlAudioJuego=document.getElementById('control-audio-juego');
   const musica=document.getElementById('musica');
   const sonidoJugada=document.getElementById('sonido-jugada');
   const sonidoVictoria=document.getElementById('sonido-victoria');
@@ -430,6 +452,7 @@
   let nombresJugadores={X:"Jugador 1",O:"Jugador 2"};
   let contraMaquina=true;
   let contadorJugadas=0; 
+  let musicaInicializada=false;
 
   const urlServidor = "https://mycreativegroup.github.io/Triqui/";
 
@@ -450,6 +473,38 @@
     {nombre:"Sistema", img: urlServidor + "circulo.png"}
   ];
 
+  // Intenta forzar la reproducción de audio al interactuar con cualquier elemento
+  function intentarAutoplayMusica() {
+    if(!musicaInicializada) {
+      musica.play().then(() => {
+        musicaInicializada = true;
+        actualizarIconoAudio();
+      }).catch(e => console.log("Esperando interacción fuerte del usuario para el audio..."));
+    }
+  }
+
+  function alternarAudio() {
+    if (musica.paused) {
+      musica.play();
+    } else {
+      musica.pause();
+    }
+    actualizarIconoAudio();
+  }
+
+  function actualizarIconoAudio() {
+    if (musica.paused) {
+      controlAudioJuego.textContent = "🔇";
+    } else {
+      controlAudioJuego.textContent = "🔊";
+    }
+  }
+
+  controlAudioJuego.addEventListener('click', (e) => {
+    e.stopPropagation(); // Evita conflictos con el clic global de autoplay
+    alternarAudio();
+  });
+
   function renderizarCatalogo() {
     contenedorAvatares.innerHTML = "";
     
@@ -457,7 +512,7 @@
       imagenesJugadores = {X: null, O: null};
       nombresJugadores = {X: "Jugador 1", O: "Jugador 2"};
     } else {
-      // Por defecto en vs máquina asignamos "Yo" a X y "Sistema" a O
+      // Valores por defecto del modo máquina
       imagenesJugadores.X = jugadoresMaquina[0].img;
       nombresJugadores.X = "Yo";
       imagenesJugadores.O = jugadoresMaquina[1].img;
@@ -473,45 +528,39 @@
       img.src=j.img;
       img.alt=j.nombre;
       
-      const p=document.createElement('img'); // Se mantendrá para estructurar espacio o texto alterno
       const parrafoTexto=document.createElement('p');
       parrafoTexto.textContent=j.nombre;
 
       if (contraMaquina) {
-        // En modo máquina no mostramos nombres debajo de las imágenes
-        parrafoTexto.style.display = 'none';
+        parrafoTexto.style.display = 'none'; // Sin nombres en modo máquina
         
-        // El usuario puede elegir libremente qué figura usar asignándose a "X"
-        if (imagenesJugadores.X === j.img) {
-          img.classList.add('seleccionada-X');
-        }
+        // Comportamiento de bordes: Por defecto ambos inician en Vinotinto
+        img.classList.add('borde-vinotinto');
 
-        img.addEventListener('click', () => {
-          // Remover selección previa
-          Array.from(contenedorAvatares.querySelectorAll('img')).forEach(i => i.classList.remove('seleccionada-X', 'seleccionada-O'));
+        img.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Limpiar clases de todas las imágenes del contenedor
+          Array.from(contenedorAvatares.querySelectorAll('img')).forEach(i => {
+            i.classList.remove('borde-naranja');
+            i.classList.add('borde-vinotinto');
+          });
           
-          // El usuario toma la figura seleccionada
+          // Asignar el naranja al seleccionado
+          img.classList.remove('borde-vinotinto');
+          img.classList.add('borde-naranja');
+
           imagenesJugadores.X = j.img;
           nombresJugadores.X = "Yo";
-          img.classList.add('seleccionada-X');
 
-          // La máquina toma la otra figura disponible automáticamente
           const otraFigura = jugadoresMaquina.find(m => m.img !== j.img);
           imagenesJugadores.O = otraFigura.img;
           nombresJugadores.O = "Sistema";
-          
-          // Buscar el elemento visual correspondiente a la máquina para marcarlo sutilmente si se desea
-          const todasLasImgs = contenedorAvatares.querySelectorAll('.jugador img:first-child');
-          todasLasImgs.forEach(imgElement => {
-            if(imgElement.src === otraFigura.img) {
-              imgElement.classList.add('seleccionada-O');
-            }
-          });
         });
 
       } else {
-        // Modo multijugador familiar (conserva nombres y selección alterna)
-        img.addEventListener('click',()=>{
+        // Modo multijugador familiar clásico
+        img.addEventListener('click',(e)=>{
+          e.stopPropagation();
           if(!imagenesJugadores.X){
             imagenesJugadores.X=j.img;
             nombresJugadores.X=j.nombre;
@@ -536,16 +585,6 @@
       div.appendChild(parrafoTexto);
       contenedorAvatares.appendChild(div);
     });
-
-    // Forzar visualmente el recuadro O en el modo contra máquina inicial
-    if (contraMaquina) {
-      const todasLasImgs = contenedorAvatares.querySelectorAll('.jugador img:first-child');
-      todasLasImgs.forEach(imgElement => {
-        if(imgElement.src === imagenesJugadores.O) {
-          imgElement.classList.add('seleccionada-O');
-        }
-      });
-    }
   }
 
   renderizarCatalogo();
@@ -555,17 +594,15 @@
     renderizarCatalogo();
   });
 
-  btnMusica.addEventListener('click',()=>{
-    musica.paused ? musica.play() : musica.pause();
-  });
-
-  btnIniciar.addEventListener('click',()=>{
+  btnIniciar.addEventListener('click',(e)=>{
+    e.stopPropagation();
     if(!imagenesJugadores.X || !imagenesJugadores.O){
       alert("Por favor seleccione los avatares para continuar."); return;
     }
     pantallaInicio.style.display='none';
     juego.style.display='flex';
-    body.style.backgroundColor = "#000000"; /* Asegura fondo negro en juego */
+    body.style.backgroundColor = "#000000";
+    actualizarIconoAudio();
     iniciarJuego();
   });
 
@@ -580,7 +617,10 @@
     for(let i=0;i<9;i++){
       const celda=document.createElement('div');
       celda.classList.add('celda');
-      celda.addEventListener('click',()=>jugar(i));
+      celda.addEventListener('click',(e)=>{
+        e.stopPropagation();
+        jugar(i);
+      });
       tablero.appendChild(celda);
     }
   }
@@ -634,8 +674,8 @@
   }
 
   function minimax(tableroSimulado, profundidad, esMaximizador) {
-    if (verificarGanadorEspecifico(tableroSimulado, "O")) return 10 - profundidad;
-    if (verificarGanadorEspecifico(tableroSimulado, "X")) return profundidad - 10;
+    if (verificarGanadorExplicit(tableroSimulado, "O")) return 10 - profundidad;
+    if (verificarGanadorExplicit(tableroSimulado, "X")) return profundidad - 10;
     if (tableroSimulado.every(c => c !== "")) return 0;
 
     if (esMaximizador) {
@@ -668,7 +708,7 @@
     return combos.some(([a,b,c])=>t[a]&&t[a]===t[b]&&t[a]===t[c]);
   }
 
-  function verificarGanadorEspecifico(t, jugadorSigno) {
+  function verificarGanadorExplicit(t, jugadorSigno) {
     const combos=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     return combos.some(([a,b,c])=>t[a]===jugadorSigno && t[b]===jugadorSigno && t[c]===jugadorSigno);
   }
@@ -680,8 +720,7 @@
       tituloFinal.innerHTML='Partida Finalizada: <span id="nombre-ganador-linea">EMPATE</span>';
       imagenesFinales.innerHTML=`<img src="${imagenesJugadores.X}"><img src="${imagenesJugadores.O}">`;
     }else{
-      // Se modifica "Victoria para:" por "Y el ganador es:" moviendo el nombre del ganador a otra línea en mayúscula
-      tituloFinal.innerHTML=`Y el ganador soy <span id="nombre-ganador-linea">${nombresJugadores[ganador]}</span>`;
+      tituloFinal.innerHTML=`Y el ganador es: <span id="nombre-ganador-linea">${nombresJugadores[ganador]}</span>`;
       imagenesFinales.innerHTML=`<img src="${imagenesJugadores[ganador]}">`;
       sonidoVictoria.play();
       sonidoConfeti.play();
@@ -702,10 +741,10 @@
     }
   }
 
-  btnReiniciar.addEventListener('click',iniciarJuego);
-  btnReiniciarFinal.addEventListener('click',iniciarJuego);
-  btnMenu.addEventListener('click',()=>volverMenu());
-  btnMenuFinal.addEventListener('click',()=>volverMenu());
+  btnReiniciar.addEventListener('click',(e)=>{ e.stopPropagation(); iniciarJuego(); });
+  btnReiniciarFinal.addEventListener('click',(e)=>{ e.stopPropagation(); iniciarJuego(); });
+  btnMenu.addEventListener('click',(e)=>{ e.stopPropagation(); volverMenu(); });
+  btnMenuFinal.addEventListener('click',(e)=>{ e.stopPropagation(); volverMenu(); });
 
   function volverMenu(){
     mensajeFinal.style.display='none';
