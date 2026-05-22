@@ -1,342 +1,478 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiMercado</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #8B4513; /* Marrón */
-            --mic-inactive: #A52A2A; /* Rojo */
-            --mic-active: #28a745;   /* Verde */
-            --bg-color: #EFEBE9;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Triqui🎉</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+    background: #000000; /* Fondo cambiado a negro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    color: #fff;
+  }
 
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-        }
+  /* ===== Pantalla Principal ===== */
+  #pantalla-inicio {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Fondo oscuro transparente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    z-index: 10;
+  }
 
-        /* --- PANTALLA DE INICIO --- */
-        #welcome-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
-        }
+  #pantalla-inicio h1 {
+    font-size: 3em;
+    color: #FFD166;
+    text-shadow: 3px 3px #EF476F;
+    margin-bottom: 20px;
+  }
 
-        .welcome-img {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            margin: 20px 0;
-        }
+  #configuracion {
+    background: rgba(30, 30, 30, 0.95); /* Contenedor oscuro para combinar con el fondo */
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(255,255,255,0.1);
+    width: 90%;
+    max-width: 500px;
+    color: #fff;
+  }
 
-        .user-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 100%;
-            max-width: 400px;
-        }
+  select, button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #118AB2;
+    color: white;
+    transition: all 0.3s;
+  }
 
-        .btn-user {
-            padding: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background-color: var(--primary-color);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+  button:hover {
+    background-color: #06D6A0;
+    transform: scale(1.05);
+  }
 
-        /* --- PANTALLA DE APLICACIÓN --- */
-        #app-screen {
-            display: none;
-            padding: 10px;
-        }
+  .imagenes-jugadores {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto; /* Scroll si hay muchos familiares */
+    padding: 5px;
+  }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
+  .jugador {
+    text-align: center;
+    width: 28%;
+  }
 
-        /* Botones en una sola fila con scroll horizontal */
-        .header-actions {
-            display: flex;
-            flex-direction: row;
-            overflow-x: auto;
-            gap: 8px;
-            margin-bottom: 20px;
-            padding-bottom: 8px;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
+  .jugador img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
 
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex-shrink: 0;
-        }
+  .jugador img:hover { transform: scale(1.08); }
+  .jugador img.seleccionada-X { border-color: gold; }
+  .jugador img.seleccionada-O { border-color: deepskyblue; }
 
-        .btn-add { background-color: #5D4037; }
-        .btn-save { background-color: var(--primary-color); }
-        .btn-clear { background-color: #A52A2A; }
-        .btn-back { background-color: #6D4C41; }
+  .jugador p {
+    margin-top: 5px;
+    font-weight: bold;
+    color: #FFD166;
+    font-size: 0.9em;
+  }
 
-        /* TABLA */
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        
-        th {
-            background-color: #D7CCC8;
-            border: 1px solid #BCAAA4;
-            padding: 10px;
-            text-align: center;
-        }
+  /* ===== Juego ===== */
+  #juego {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+  }
 
-        td { border: 1px solid #dee2e6; padding: 8px; }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    background-color: #FFD166;
+    padding: 10px 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    color: #073B4C;
+  }
 
-        /* Columnas */
-        .col-qty { width: 80px; text-align: center; }
-        .col-check { width: 60px; text-align: center; }
-        .col-price, .col-total { width: 120px; text-align: right; }
+  header img {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    border: 2px solid #073B4C;
+    object-fit: cover;
+  }
 
-        /* Input de cantidad optimizado para Android/PC */
-        .qty-input {
-            width: 70px;
-            text-align: center;
-            padding: 5px;
-            font-size: 16px; /* Evita zoom automático en iOS/Android */
-        }
+  /* El tablero calcula dinámicamente su tamaño basado en el lado más corto de la pantalla (vmin) */
+  #tablero {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 85vmin; 
+    max-height: 85vmin;
+    background-color: #FFD166;
+    border: 6px solid #073B4C;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  }
 
-        .name-input {
-            width: 100%;
-            border: 1px solid #ccc;
-            padding: 5px;
-            font-weight: bold;
-        }
+  .celda {
+    border: 2px solid #F4978E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #FFE9C6;
+    transition: background 0.3s;
+  }
 
-        .item-inactive { color: #999 !important; font-weight: normal !important; }
+  .celda:hover { background-color: #F8CBA6; }
 
-        .dictate-btn {
-            background: none;
-            border: none;
-            color: var(--mic-inactive);
-            cursor: pointer;
-            font-size: 1.3rem;
-            padding: 0 8px;
-            transition: color 0.2s;
-        }
+  .celda img {
+    width: 85%;
+    height: 85%;
+    object-fit: cover; /* Mantiene la proporción de las fotos dentro de la celda */
+    border-radius: 10px;
+    opacity: 0;
+    animation: aparecer 0.4s forwards;
+  }
 
-        .dictate-btn.recording { color: var(--mic-active) !important; }
+  @keyframes aparecer {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
 
-        .total-bar {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            text-align: right;
-            padding: 15px;
-            background: #EFEBE9;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-    </style>
+  footer {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+  }
+
+  footer button {
+    background: #EF476F;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 15px;
+  }
+
+  footer button:hover { background-color: #06D6A0; }
+
+  /* ===== Mensaje Final ===== */
+  #mensaje-final {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    z-index: 20;
+  }
+
+  #mensaje-final h2 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    text-shadow: 3px 3px #EF476F;
+  }
+
+  #mensaje-final .imagenes-finales {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  #mensaje-final .imagenes-finales img {
+    width: 100px; height: 100px;
+    border-radius: 15px;
+    border: 3px solid white;
+    object-fit: cover;
+  }
+
+  /* ===== Confeti ===== */
+  .confeti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: caer 3s linear forwards;
+    z-index: 1000;
+  }
+
+  @keyframes caer {
+    to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== Responsividad Adicional ===== */
+  @media (max-width: 480px) {
+    #pantalla-inicio h1 { font-size: 2em; }
+    header { font-size: 1.1em; padding: 8px 15px; }
+    header img { width: 35px; height: 35px; }
+    #tablero { max-width: 90vw; max-height: 90vw; } /* Prioridad total al ancho en móviles pequeños */
+  }
+</style>
 </head>
 <body>
 
-    <div id="welcome-screen">
-        <h1 style="color: var(--primary-color);">Mi Lista</h1>
-        <img src="https://www.tukanopublicidad.com/Folder/Carrito-01.png" alt="Carrito" class="welcome-img">
-        <h3>Selecciona Un Usuario</h3>
-        <div class="user-grid">
-            <button class="btn-user" onclick="startApp('nanos', 'Ñaños')">Ñaños</button>
-            <button class="btn-user" onclick="startApp('pato', 'Pato')">Pato</button>
-            <button class="btn-user" onclick="startApp('pipe', 'Pipe')">Pipe</button>
-            <button class="btn-user" onclick="startApp('lila', 'Lila')">Lila</button>
-            <button class="btn-user" onclick="startApp('invitado1', 'Invitado 1')">Invitado 1</button>
-            <button class="btn-user" onclick="startApp('invitado2', 'Invitado 2')">Invitado 2</button>
-        </div>
+<div id="pantalla-inicio">
+  <h1>🎯 TRIQUI FAMILIAR 🎯</h1>
+  <div id="configuracion">
+    <label style="display:block; margin-bottom:10px;">¿Cómo quieres jugar?</label>
+    <select id="modo">
+      <option value="solo">Solito</option>
+      <option value="humano">En familia</option>
+    </select>
+    <div id="imagenes-humano" class="imagenes-jugadores"></div>
+    <div style="margin-top: 15px;">
+      <button id="btn-musica">🔊 Música ON/OFF</button>
+      <button id="btn-iniciar">🚀 Iniciar Juego</button>
     </div>
+  </div>
+</div>
 
-    <div id="app-screen">
-        <div class="container">
-            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom:15px;">
-                <h2 id="current-user-title" style="color: var(--primary-color);">Lista de</h2>
-                <button class="btn btn-back" onclick="location.reload()"><i class="fas fa-arrow-left"></i> Volver</button>
-            </div>
-            
-            <div class="header-actions">
-                <input type="text" id="new-item-name" style="padding:10px; border-radius:5px; border:1px solid #ccc; flex-grow:1;" placeholder="Producto nuevo...">
-                <button class="btn btn-add" onclick="addNewRow()"><i class="fas fa-plus"></i> Agregar</button>
-                <button class="btn btn-save" onclick="saveData()"><i class="fas fa-save"></i> Guardar</button>
-                <button class="btn btn-clear" onclick="clearAll()"><i class="fas fa-trash"></i> Borrar</button>
-            </div>
+<div id="juego">
+  <header id="turno">
+    <img id="foto-turno" src="" alt="">
+    <span id="texto-turno">Le toca a: Jugador 1</span>
+  </header>
+  <div id="tablero"></div>
+  <footer>
+    <button id="btn-reiniciar">🔁 Reiniciar</button>
+    <button id="btn-menu">🏠 Menú</button>
+  </footer>
+</div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col-qty">#</th>
-                            <th>Producto</th>
-                            <th class="col-check"><i class="fas fa-check-circle"></i></th>
-                            <th class="col-price">Precio ($)</th>
-                            <th class="col-total">Total</th>
-                            <th style="width: 40px;"><i class="fas fa-times"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody id="task-list"></tbody>
-                </table>
-            </div>
+<div id="mensaje-final">
+  <h2 id="titulo-final"></h2>
+  <div class="imagenes-finales" id="imagenes-finales"></div>
+  <button id="btn-reiniciar-final">🔁 Jugar de nuevo</button>
+  <button id="btn-menu-final">🏠 Volver al menú</button>
+</div>
 
-            <div class="total-bar">
-                Total A Pagar: <span id="grand-total">$ 0</span>
-            </div>
-        </div>
-    </div>
+<audio id="musica" src="music.mp3" loop></audio>
+<audio id="sonido-jugada" src="click.mp3"></audio>
+<audio id="sonido-victoria" src="victory.mp3"></audio>
+<audio id="sonido-confeti" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6dcfa2f2f2.mp3?filename=party-horn-112941.mp3"></audio>
 
 <script>
-    let currentUser = "";
-    const taskList = document.getElementById('task-list');
-    const formatter = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
+  const pantallaInicio=document.getElementById('pantalla-inicio');
+  const juego=document.getElementById('juego');
+  const tablero=document.getElementById('tablero');
+  const modo=document.getElementById('modo');
+  const btnIniciar=document.getElementById('btn-iniciar');
+  const btnMusica=document.getElementById('btn-musica');
+  const musica=document.getElementById('musica');
+  const sonidoJugada=document.getElementById('sonido-jugada');
+  const sonidoVictoria=document.getElementById('sonido-victoria');
+  const sonidoConfeti=document.getElementById('sonido-confeti');
+  const turnoTexto=document.getElementById('texto-turno');
+  const fotoTurno=document.getElementById('foto-turno');
+  const imagenesHumano=document.getElementById('imagenes-humano');
+  const mensajeFinal=document.getElementById('mensaje-final');
+  const tituloFinal=document.getElementById('titulo-final');
+  const imagenesFinales=document.getElementById('imagenes-finales');
+  const btnMenu=document.getElementById('btn-menu');
+  const btnMenuFinal=document.getElementById('btn-menu-final');
+  const btnReiniciar=document.getElementById('btn-reiniciar');
+  const btnReiniciarFinal=document.getElementById('btn-reiniciar-final');
 
-    function startApp(id, label) {
-        currentUser = id;
-        document.getElementById('current-user-title').innerText = "Lista de " + label;
-        document.getElementById('welcome-screen').style.display = 'none';
-        document.getElementById('app-screen').style.display = 'block';
-        loadData();
+  let turno='X';
+  let celdas=["","","","","","","","",""];
+  let imagenesJugadores={X:null,O:null};
+  let nombresJugadores={X:"Jugador 1",O:"Jugador 2"};
+  let contraMaquina=true;
+
+  // URL base solicitada para el repositorio
+  const baseUrl = "https://mycreativegroup.github.io/Triqui/";
+
+  const jugadores = [
+    {nombre:"Tío",img:"https://www.tukanopublicidad.com/Folder/El tio.png"},
+    {nombre:"Chompi",img:"https://www.tukanopublicidad.com/Folder/Chompi.png"},
+    {nombre:"Pato",img:"https://www.tukanopublicidad.com/Folder/Pato.png"},
+    {nombre:"Juanis",img:"https://www.tukanopublicidad.com/Folder/Juanis.png"},
+    {nombre:"Lila",img:"https://www.tukanopublicidad.com/Folder/Lila.png"},
+    {nombre:"Pipe",img:"https://www.tukanopublicidad.com/Folder/Pipe.png"},
+    {nombre:"Tutis",img:"https://www.tukanopublicidad.com/Folder/Tutis.png"},
+    {nombre:"Emilito",img:"https://www.tukanopublicidad.com/Folder/Emilito.png"},
+    {nombre:"Ñaños",img:"https://www.tukanopublicidad.com/Folder/Nanos.png"}
+  ];
+
+  jugadores.forEach(j=>{
+    const div=document.createElement('div');
+    div.classList.add('jugador');
+    const img=document.createElement('img');
+    img.src=j.img;
+    img.alt=j.nombre;
+    const p=document.createElement('p');
+    p.textContent=j.nombre;
+
+    img.addEventListener('click',()=>{
+      if(!imagenesJugadores.X){
+        imagenesJugadores.X=j.img;
+        nombresJugadores.X=j.nombre;
+        img.classList.add('seleccionada-X');
+      }else if(!imagenesJugadores.O && j.img!==imagenesJugadores.X){
+        imagenesJugadores.O=j.img;
+        nombresJugadores.O=j.nombre;
+        img.classList.add('seleccionada-O');
+      }else if(img.classList.contains('seleccionada-X')){
+        imagenesJugadores.X=null;
+        nombresJugadores.X="Jugador 1";
+        img.classList.remove('seleccionada-X');
+      }else if(img.classList.contains('seleccionada-O')){
+        imagenesJugadores.O=null;
+        nombresJugadores.O="Jugador 2";
+        img.classList.remove('seleccionada-O');
+      }
+    });
+
+    div.appendChild(img); div.appendChild(p);
+    imagenesHumano.appendChild(div);
+  });
+
+  modo.addEventListener('change',()=>{
+    if(modo.value==="humano"){ imagenesHumano.style.display="flex"; contraMaquina=false; }
+    else { imagenesHumano.style.display="none"; contraMaquina=true; }
+  });
+
+  btnMusica.addEventListener('click',()=>{
+    musica.paused ? musica.play() : musica.pause();
+  });
+
+  btnIniciar.addEventListener('click',()=>{
+    if(!contraMaquina && (!imagenesJugadores.X||!imagenesJugadores.O)){
+      alert("Selecciona las imágenes de los dos jugadores antes de comenzar.");return;
     }
+    pantallaInicio.style.display='none';
+    juego.style.display='flex';
+    iniciarJuego();
+  });
 
-    function createRow(qty = 1, name = "", checked = true, price = 0) {
-        const row = document.createElement('tr');
-        const total = qty * price;
-
-        row.innerHTML = `
-            <td class="col-qty"><input type="number" class="qty-input" value="${qty}" min="1"></td>
-            <td>
-                <div style="display:flex; align-items:center;">
-                    <input type="text" class="name-input ${!checked && name ? 'item-inactive' : ''}" value="${name}">
-                    <button class="dictate-btn"><i class="fas fa-microphone"></i></button>
-                </div>
-            </td>
-            <td class="col-check"><input type="checkbox" class="row-check" ${checked ? 'checked' : ''} style="transform: scale(1.3);"></td>
-            <td><input type="text" class="price-input" style="width:100%; text-align:right;" value="${price.toLocaleString('es-CO')}"></td>
-            <td class="col-total row-total-val" style="text-align:right; font-weight:bold;">${formatter.format(total)}</td>
-            <td style="text-align:center;"><button style="background:none; border:none; color:#A52A2A; cursor:pointer;" onclick="this.closest('tr').remove(); updateGrandTotal();"><i class="fas fa-trash-alt"></i></button></td>
-        `;
-
-        const qInput = row.querySelector('.qty-input');
-        const pInput = row.querySelector('.price-input');
-        const tCell = row.querySelector('.row-total-val');
-        const micBtn = row.querySelector('.dictate-btn');
-        const nInput = row.querySelector('.name-input');
-        const cInput = row.querySelector('.row-check');
-
-        const recalc = () => {
-            const q = parseInt(qInput.value) || 0;
-            const p = parseFloat(pInput.value.replace(/[^\d]/g, "")) || 0;
-            tCell.innerText = formatter.format(q * p);
-            updateGrandTotal();
-        };
-
-        pInput.addEventListener('input', (e) => {
-            let val = e.target.value.replace(/[^\d]/g, "");
-            e.target.value = val ? parseInt(val).toLocaleString('es-CO') : "";
-            recalc();
-        });
-
-        qInput.addEventListener('input', recalc);
-        cInput.addEventListener('change', () => nInput.classList.toggle('item-inactive', !cInput.checked));
-
-        micBtn.onclick = () => {
-            const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!Speech) return alert("Micrófono no soportado");
-            
-            const rec = new Speech();
-            rec.lang = 'es-CO';
-            
-            rec.onstart = () => micBtn.classList.add('recording');
-            rec.onend = () => micBtn.classList.remove('recording');
-            
-            rec.onresult = (e) => {
-                nInput.value = e.results[0][0].transcript;
-                cInput.checked = true;
-                nInput.classList.remove('item-inactive');
-            };
-            rec.start();
-        };
-
-        return row;
+  function iniciarJuego(){
+    mensajeFinal.style.display='none';
+    tablero.innerHTML='';
+    celdas=["","","","","","","","",""];
+    turno='X';
+    if(contraMaquina){
+      // Rutas actualizadas con la URL de tu GitHub Pages
+      imagenesJugadores={X: baseUrl + 'yo.jpg', O: baseUrl + 'circulo.png'};
+      nombresJugadores={X:'Yo',O:'La Máquina'};
     }
-
-    function addNewRow() {
-        const input = document.getElementById('new-item-name');
-        if(!input.value.trim()) return;
-        taskList.insertBefore(createRow(1, input.value, true, 0), taskList.firstChild);
-        input.value = "";
-        updateGrandTotal();
+    actualizarTurno();
+    for(let i=0;i<9;i++){
+      const celda=document.createElement('div');
+      celda.classList.add('celda');
+      celda.addEventListener('click',()=>jugar(i));
+      tablero.appendChild(celda);
     }
+  }
 
-    function updateGrandTotal() {
-        let total = 0;
-        document.querySelectorAll('#task-list tr').forEach(row => {
-            const q = parseInt(row.querySelector('.qty-input').value) || 0;
-            const p = parseFloat(row.querySelector('.price-input').value.replace(/[^\d]/g, "")) || 0;
-            total += (q * p);
-        });
-        document.getElementById('grand-total').innerText = formatter.format(total);
-    }
+  function actualizarTurno(){
+    turnoTexto.textContent=`Le toca a: ${nombresJugadores[turno]}`;
+    fotoTurno.src=imagenesJugadores[turno];
+  }
 
-    async function saveData() {
-        const items = [];
-        document.querySelectorAll('#task-list tr').forEach(row => {
-            const n = row.querySelector('.name-input').value.trim();
-            if(n) items.push({
-                q: row.querySelector('.qty-input').value,
-                n: n,
-                c: row.querySelector('.row-check').checked,
-                p: parseFloat(row.querySelector('.price-input').value.replace(/[^\d]/g, "")) || 0
-            });
-        });
-        await fetch('save_data_multi.php', { method: 'POST', body: JSON.stringify({ user: currentUser, items: items }) });
-        alert("Guardado");
-    }
+  function jugar(i){
+    if(celdas[i]!=="")return;
+    celdas[i]=turno;
+    const celda=tablero.children[i];
+    const img=document.createElement('img');
+    img.src=imagenesJugadores[turno];
+    celda.appendChild(img);
+    sonidoJugada.play();
 
-    async function loadData() {
-        const res = await fetch(`load_data_multi.php?user=${currentUser}`);
-        const data = await res.json();
-        taskList.innerHTML = "";
-        if(data.items && data.items.length > 0) {
-            data.items.forEach(i => taskList.appendChild(createRow(i.q, i.n, i.c, i.p)));
-        } else {
-            for(let i=0; i<8; i++) taskList.appendChild(createRow(1, "", false, 0));
-        }
-        updateGrandTotal();
-    }
+    if(verificarGanador()){setTimeout(()=>mostrarMensajeFinal(turno,false),300);return;}
+    if(celdas.every(c=>c!=="")){setTimeout(()=>mostrarMensajeFinal(null,true),300);return;}
+    turno=(turno==='X')?'O':'X';
+    actualizarTurno();
+    if(contraMaquina && turno==='O') setTimeout(jugadaMaquina,500);
+  }
 
-    function clearAll() {
-        if(confirm("¿Borrar todo?")) {
-            taskList.innerHTML = "";
-            for(let i=0; i<8; i++) taskList.appendChild(createRow(1, "", false, 0));
-            updateGrandTotal();
-        }
+  function jugadaMaquina(){
+    const vacias=celdas.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+    const movimiento=vacias[Math.floor(Math.random()*vacias.length)];
+    jugar(movimiento);
+  }
+
+  function verificarGanador(){
+    const combos=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    return combos.some(([a,b,c])=>celdas[a]&&celdas[a]===celdas[b]&&celdas[a]===celdas[c]);
+  }
+
+  function mostrarMensajeFinal(ganador,empate){
+    mensajeFinal.style.display='flex';
+    imagenesFinales.innerHTML='';
+    if(empate){
+      tituloFinal.textContent='¡Empate! 😅';
+      imagenesFinales.innerHTML=`<img src="${imagenesJugadores.X}"><img src="${imagenesJugadores.O}">`;
+    }else{
+      tituloFinal.textContent=`🏆 ¡${nombresJugadores[ganador]} ganó!`;
+      imagenesFinales.innerHTML=`<img src="${imagenesJugadores[ganador]}">`;
+      sonidoVictoria.play();
+      sonidoConfeti.play();
+      lanzarConfeti();
     }
+  }
+
+  function lanzarConfeti(){
+    for(let i=0;i<100;i++){
+      const confeti=document.createElement('div');
+      confeti.classList.add('confeti');
+      confeti.style.left=Math.random()*100+"vw";
+      confeti.style.backgroundColor=`hsl(${Math.random()*360},100%,60%)`;
+      confeti.style.animationDuration=(2+Math.random()*3)+"s";
+      confeti.style.width=confeti.style.height=(5+Math.random()*10)+"px";
+      document.body.appendChild(confeti);
+      setTimeout(()=>confeti.remove(),4000);
+    }
+  }
+
+  btnReiniciar.addEventListener('click',iniciarJuego);
+  btnReiniciarFinal.addEventListener('click',iniciarJuego);
+  btnMenu.addEventListener('click',()=>volverMenu());
+  btnMenuFinal.addEventListener('click',()=>volverMenu());
+
+  function volverMenu(){
+    mensajeFinal.style.display='none';
+    juego.style.display='none';
+    pantallaInicio.style.display='flex';
+  }
 </script>
 </body>
 </html>
