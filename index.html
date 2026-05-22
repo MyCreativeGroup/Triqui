@@ -360,8 +360,8 @@
     <div class="seccion-modalidad">
       <label style="display:block; margin-bottom:12px; font-size:1.1em; color:#ffffff; font-weight: bold;">Modalidad de Juego</label>
       <select id="modo">
-        <option value="solo">Individual (vs. Máquina)</option>
-        <option value="humano">Multijugador Familiar</option>
+        <option value="solo">Solito</option>
+        <option value="humano">Con el socio</option>
       </select>
     </div>
 
@@ -392,7 +392,7 @@
 <div id="mensaje-final">
   <h2 id="titulo-final"></h2>
   <div class="imagenes-finales" id="imagenes-finales"></div>
-  <button id="btn-reiniciar-final">Jugar de nuevo</button>
+  <button id="btn-reiniciar-final">¿otro o miedo?</button>
   <button id="btn-menu-final">Volver al menú</button>
 </div>
 
@@ -681,7 +681,7 @@
       imagenesFinales.innerHTML=`<img src="${imagenesJugadores.X}"><img src="${imagenesJugadores.O}">`;
     }else{
       // Se modifica "Victoria para:" por "Y el ganador es:" moviendo el nombre del ganador a otra línea en mayúscula
-      tituloFinal.innerHTML=`Y el ganador es: <span id="nombre-ganador-linea">${nombresJugadores[ganador]}</span>`;
+      tituloFinal.innerHTML=`Y el ganador soy <span id="nombre-ganador-linea">${nombresJugadores[ganador]}</span>`;
       imagenesFinales.innerHTML=`<img src="${imagenesJugadores[ganador]}">`;
       sonidoVictoria.play();
       sonidoConfeti.play();
