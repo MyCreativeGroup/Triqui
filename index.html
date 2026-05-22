@@ -8,14 +8,24 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Poppins', 'Segoe UI', sans-serif;
-    background: #000000; /* Fondo negro estricto por defecto */
+    background: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
     color: #ffffff;
-    transition: background-color 0.3s ease;
+  }
+
+  /* ===== Transiciones de Pantalla Suaves ===== */
+  .pantalla {
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    display: none;
+  }
+  .pantalla.activa {
+    display: flex;
+    opacity: 1;
   }
 
   /* ===== Pantalla Principal ===== */
@@ -24,7 +34,6 @@
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.85);
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -45,19 +54,18 @@
 
   #configuracion {
     background: rgba(25, 25, 25, 0.98);
-    padding: 35px 25px;
+    padding: 30px 25px;
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
     width: 95%;
     max-width: 550px;
-    min-height: 460px;
+    min-height: 520px;
     color: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
-  /* Área de escoger modalidad en color vinotinto */
   .seccion-modalidad {
     background-color: #581845; /* Vinotinto */
     padding: 15px;
@@ -76,12 +84,11 @@
     border: none;
     cursor: pointer;
     background-color: #ffa500; /* Naranja */
-    color: #000000; /* Texto Negro */
+    color: #000000;
     font-weight: bold;
     transition: all 0.3s ease;
   }
 
-  /* Botón iniciar de color naranja con texto blanco */
   #btn-iniciar {
     margin: 10px auto;
     padding: 12px 35px;
@@ -89,8 +96,8 @@
     border-radius: 10px;
     border: none;
     cursor: pointer;
-    background-color: #ffa500; /* Naranja */
-    color: #ffffff; /* Texto Blanco */
+    background-color: #ffa500;
+    color: #ffffff;
     font-weight: bold;
     transition: all 0.3s ease;
     display: block;
@@ -106,8 +113,8 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     width: 100%;
   }
 
@@ -135,11 +142,9 @@
 
   .jugador img:hover { transform: scale(1.05); }
   
-  /* Bordes específicos solicitados */
   .borde-vinotinto { border-color: #581845 !important; }
   .borde-naranja { border-color: #ffa500 !important; }
 
-  /* Estilos para multijugador familiar clásico */
   .jugador img.seleccionada-X { border-color: gold; }
   .jugador img.seleccionada-O { border-color: deepskyblue; }
 
@@ -154,17 +159,55 @@
     width: 100%;
   }
 
+  /* ===== Selector de Dificultad ===== */
+  #seccion-dificultad {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .btn-dificultad {
+    flex: 1;
+    padding: 10px 5px;
+    font-size: 0.9em;
+    font-weight: bold;
+    border: 2px solid #581845;
+    background-color: transparent;
+    color: #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-dificultad.seleccionado {
+    background-color: #ffa500;
+    color: #000000;
+    border-color: #ffa500;
+  }
+
+  /* ===== Marcador Local ===== */
+  #marcador {
+    font-size: 0.9em;
+    color: #FFD166;
+    background: rgba(255,255,255,0.05);
+    padding: 6px 15px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
   /* ===== Área de Juego ===== */
   #juego {
-    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     height: 100%;
     padding: 0;
-    background-color: #000000; /* Fondo del juego en negro */
-    color: #ffffff;
+    background-color: #000000;
   }
 
   header {
@@ -173,11 +216,11 @@
     justify-content: center;
     gap: 15px;
     font-size: 1.4em;
-    background-color: #ffa500; /* Zonas destacadas de color naranja */
+    background-color: #ffa500;
     padding: 15px 20px;
-    color: #000000; /* Textos de color negro */
+    color: #000000;
     font-weight: 600;
-    width: 100%; /* Ocupa el ancho total */
+    width: 100%;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
@@ -189,8 +232,8 @@
     object-fit: cover;
   }
 
-  /* Bloque contenedor que limita el ancho del juego al tamaño del tablero */
   .contenedor-tablero-controles {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -200,12 +243,13 @@
   }
 
   #tablero {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     aspect-ratio: 1 / 1;
     width: 100%;
-    background-color: #ffa500; /* Bordes naranja */
+    background-color: #ffa500;
     border: 6px solid #ffa500;
     border-radius: 15px;
     box-shadow: 0 12px 28px rgba(255,255,255,0.05);
@@ -213,17 +257,29 @@
   }
 
   .celda {
-    border: 3px solid #000000; /* Separadores negros */
+    position: relative;
+    border: 3px solid #000000;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: #ffffff; /* Cada jugada queda en fondo blanco */
+    background: #ffffff;
     transition: background 0.2s;
     aspect-ratio: 1 / 1;
   }
 
-  .celda:hover { background-color: #e2e8f0; }
+  /* Hover dinámico con previsualización sutil de la jugada */
+  .celda:not(.ocupada):hover::after {
+    content: '';
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    background-image: var(--preview-img);
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    opacity: 0.35;
+  }
 
   .celda img {
     width: 85%;
@@ -233,6 +289,7 @@
     border-radius: 8px;
     opacity: 0;
     animation: aparecer 0.3s forwards;
+    z-index: 2;
   }
 
   @keyframes aparecer {
@@ -240,7 +297,28 @@
     to { opacity: 1; transform: scale(1); }
   }
 
-  /* Los botones inferiores ahora integran el control de audio en medio */
+  /* Línea Ganadora Física mediante SVG */
+  #svg-linea {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  #linea-victoria {
+    stroke: #581845; /* Color vinotinto llamativo para marcar el gane */
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: trazarLinea 0.5s ease-out forwards;
+  }
+
+  @keyframes trazarLinea {
+    to { stroke-dashoffset: 0; }
+  }
+
   footer {
     display: flex;
     width: 100%;
@@ -255,8 +333,8 @@
     font-size: 1.1em;
     border: none;
     border-radius: 0;
-    background-color: #ffa500; /* Todos los elementos de color naranja */
-    color: #000000; /* Textos/Iconos de color negro */
+    background-color: #ffa500;
+    color: #000000;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -265,27 +343,16 @@
     justify-content: center;
   }
 
-  footer button {
-    flex: 2; /* Los botones de texto toman más espacio */
-  }
-
+  footer button { flex: 2; }
   footer div.btn-audio-juego {
-    flex: 1; /* El botón del ícono central es más compacto */
+    flex: 1;
     font-size: 1.3em;
     user-select: none;
-  }
-
-  footer button:hover, footer div.btn-audio-juego:hover { 
-    background-color: #e09200; 
-  }
-
-  #btn-reiniciar {
     border-right: 1px solid rgba(0,0,0,0.2);
   }
-  
-  .btn-audio-juego {
-    border-right: 1px solid rgba(0,0,0,0.2);
-  }
+
+  footer button:hover, footer div.btn-audio-juego:hover { background-color: #e09200; }
+  #btn-reiniciar { border-right: 1px solid rgba(0,0,0,0.2); }
 
   /* ===== Ventana de Resultados ===== */
   #mensaje-final {
@@ -346,9 +413,7 @@
     cursor: pointer;
   }
 
-  #btn-reiniciar-final:hover, #btn-menu-final:hover {
-    background-color: #e09200;
-  }
+  #btn-reiniciar-final:hover, #btn-menu-final:hover { background-color: #e09200; }
 
   .confeti {
     position: fixed;
@@ -359,13 +424,11 @@
     z-index: 1000;
   }
 
-  @keyframes caer {
-    to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
+  @keyframes caer { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
 
   @media (max-width: 480px) {
     #pantalla-inicio h1 { font-size: 2.4em; }
-    #configuracion { min-height: 420px; padding: 20px 15px; }
+    #configuracion { min-height: 490px; padding: 20px 15px; }
     header { font-size: 1.2em; padding: 12px 15px; }
     header img { width: 38px; height: 38px; }
     .contenedor-tablero-controles { max-width: 85vw; }
@@ -376,7 +439,7 @@
 </head>
 <body onclick="intentarAutoplayMusica()" ontouchstart="intentarAutoplayMusica()">
 
-<div id="pantalla-inicio">
+<div id="pantalla-inicio" class="pantalla activa">
   <h1>TRI OF TRI</h1>
   <div id="configuracion">
     <div class="seccion-modalidad">
@@ -389,13 +452,24 @@
 
     <div id="contenedor-avatares" class="imagenes-jugadores"></div>
 
+    <div id="contenedor-dificultad" style="width: 100%;">
+      <label style="display:block; margin-bottom:8px; font-size:1em; color:#FFD166; font-weight: bold;">Dificultad de la Máquina</label>
+      <div id="seccion-dificultad">
+        <button class="btn-dificultad" data-nivel="novato">Novato</button>
+        <button class="btn-dificultad seleccionado" data-nivel="intermedio">Intermedio</button>
+        <button class="btn-dificultad" data-nivel="experto">Experto</button>
+      </div>
+    </div>
+
+    <div id="marcador">Historial: Ganadas 0 | Perdidas 0</div>
+
     <div style="width: 100%;">
       <button id="btn-iniciar">Iniciar Partida</button>
     </div>
   </div>
 </div>
 
-<div id="juego">
+<div id="juego" class="pantalla">
   <header id="turno">
     <img id="foto-turno" src="" alt="">
     <span id="texto-turno">Turno actual: -</span>
@@ -403,6 +477,7 @@
   
   <div class="contenedor-tablero-controles">
     <div id="tablero"></div>
+    <svg id="svg-linea"><line id="linea-victoria" x1="0" y1="0" x2="0" y2="0" /></svg>
     <footer>
       <button id="btn-reiniciar">Reiniciar</button>
       <div id="control-audio-juego" class="btn-audio-juego">🔊</div>
@@ -445,14 +520,23 @@
   const btnMenuFinal=document.getElementById('btn-menu-final');
   const btnReiniciar=document.getElementById('btn-reiniciar');
   const btnReiniciarFinal=document.getElementById('btn-reiniciar-final');
+  const contenedorDificultad=document.getElementById('contenedor-dificultad');
+  const marcadorTxt=document.getElementById('marcador');
+  const svgLinea=document.getElementById('svg-linea');
+  const lineaVictoria=document.getElementById('linea-victoria');
 
   let turno='X';
   let celdas=["","","","","","","","",""];
   let imagenesJugadores={X:null,O:null};
   let nombresJugadores={X:"Jugador 1",O:"Jugador 2"};
   let contraMaquina=true;
+  let dificultad="intermedio";
   let contadorJugadas=0; 
   let musicaInicializada=false;
+
+  // Sistema de puntuaciones persistente con LocalStorage
+  let partidasGanadas = parseInt(localStorage.getItem('tri_ganadas')) || 0;
+  let partidasPerdidas = parseInt(localStorage.getItem('tri_perdidas')) || 0;
 
   const urlServidor = "https://mycreativegroup.github.io/Triqui/";
 
@@ -473,46 +557,62 @@
     {nombre:"Sistema", img: urlServidor + "circulo.png"}
   ];
 
-  // Intenta forzar la reproducción de audio al interactuar con cualquier elemento
+  function actualizarMarcador() {
+    marcadorTxt.textContent = `Historial: Ganadas ${partidasGanadas} | Perdidas ${partidasPerdidas}`;
+  }
+  actualizarMarcador();
+
   function intentarAutoplayMusica() {
     if(!musicaInicializada) {
       musica.play().then(() => {
         musicaInicializada = true;
         actualizarIconoAudio();
-      }).catch(e => console.log("Esperando interacción fuerte del usuario para el audio..."));
+      }).catch(e => console.log("Esperando interacción..."));
     }
   }
 
   function alternarAudio() {
-    if (musica.paused) {
-      musica.play();
-    } else {
-      musica.pause();
-    }
+    musica.paused ? musica.play() : musica.pause();
     actualizarIconoAudio();
   }
 
   function actualizarIconoAudio() {
-    if (musica.paused) {
-      controlAudioJuego.textContent = "🔇";
-    } else {
-      controlAudioJuego.textContent = "🔊";
-    }
+    controlAudioJuego.textContent = musica.paused ? "🔇" : "🔊";
   }
 
   controlAudioJuego.addEventListener('click', (e) => {
-    e.stopPropagation(); // Evita conflictos con el clic global de autoplay
+    e.stopPropagation();
     alternarAudio();
   });
+
+  // Listener para los botones de dificultad
+  document.querySelectorAll('.btn-dificultad').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.btn-dificultad').forEach(b => b.classList.remove('seleccionado'));
+      btn.classList.add('seleccionado');
+      dificultad = btn.getAttribute('data-nivel');
+    });
+  });
+
+  function cambiarPantalla(pantallaOcultar, pantallaMostrar) {
+    pantallaOcultar.classList.remove('activa');
+    setTimeout(() => {
+      pantallaOcultar.style.display = 'none';
+      pantallaMostrar.style.display = 'flex';
+      setTimeout(() => pantallaMostrar.classList.add('activa'), 50);
+    }, 400);
+  }
 
   function renderizarCatalogo() {
     contenedorAvatares.innerHTML = "";
     
     if (!contraMaquina) {
+      contenedorDificultad.style.display = "none";
       imagenesJugadores = {X: null, O: null};
       nombresJugadores = {X: "Jugador 1", O: "Jugador 2"};
     } else {
-      // Valores por defecto del modo máquina
+      contenedorDificultad.style.display = "block";
       imagenesJugadores.X = jugadoresMaquina[0].img;
       nombresJugadores.X = "Yo";
       imagenesJugadores.O = jugadoresMaquina[1].img;
@@ -532,20 +632,16 @@
       parrafoTexto.textContent=j.nombre;
 
       if (contraMaquina) {
-        parrafoTexto.style.display = 'none'; // Sin nombres en modo máquina
-        
-        // Comportamiento de bordes: Por defecto ambos inician en Vinotinto
+        parrafoTexto.style.display = 'none'; 
         img.classList.add('borde-vinotinto');
 
         img.addEventListener('click', (e) => {
           e.stopPropagation();
-          // Limpiar clases de todas las imágenes del contenedor
           Array.from(contenedorAvatares.querySelectorAll('img')).forEach(i => {
             i.classList.remove('borde-naranja');
             i.classList.add('borde-vinotinto');
           });
           
-          // Asignar el naranja al seleccionado
           img.classList.remove('borde-vinotinto');
           img.classList.add('borde-naranja');
 
@@ -558,7 +654,6 @@
         });
 
       } else {
-        // Modo multijugador familiar clásico
         img.addEventListener('click',(e)=>{
           e.stopPropagation();
           if(!imagenesJugadores.X){
@@ -599,9 +694,7 @@
     if(!imagenesJugadores.X || !imagenesJugadores.O){
       alert("Por favor seleccione los avatares para continuar."); return;
     }
-    pantallaInicio.style.display='none';
-    juego.style.display='flex';
-    body.style.backgroundColor = "#000000";
+    cambiarPantalla(pantallaInicio, juego);
     actualizarIconoAudio();
     iniciarJuego();
   });
@@ -609,9 +702,16 @@
   function iniciarJuego(){
     mensajeFinal.style.display='none';
     tablero.innerHTML='';
+    lineaVictoria.setAttribute("x1", "0");
+    lineaVictoria.setAttribute("y1", "0");
+    lineaVictoria.setAttribute("x2", "0");
+    lineaVictoria.setAttribute("y2", "0");
     celdas=["","","","","","","","",""];
     turno='X';
     contadorJugadas = 0; 
+    
+    // Actualiza la imagen de hover dinámico del tablero
+    document.documentElement.style.setProperty('--preview-img', `url('${imagenesJugadores.X}')`);
     
     actualizarTurno();
     for(let i=0;i<9;i++){
@@ -628,6 +728,7 @@
   function actualizarTurno(){
     turnoTexto.textContent=`Turno actual: ${nombresJugadores[turno]}`;
     fotoTurno.src=imagenesJugadores[turno];
+    document.documentElement.style.setProperty('--preview-img', `url('${imagenesJugadores[turno]}')`);
   }
 
   function jugar(i){
@@ -635,27 +736,48 @@
     celdas[i]=turno;
     contadorJugadas++; 
     const celda=tablero.children[i];
+    celda.classList.add('ocupada');
     const img=document.createElement('img');
     img.src=imagenesJugadores[turno];
     celda.appendChild(img);
     sonidoJugada.play();
 
-    if(verificarGanador(celdas)){setTimeout(()=>mostrarMensajeFinal(turno,false),300);return;}
-    if(celdas.every(c=>c!=="")){setTimeout(()=>mostrarMensajeFinal(null,true),300);return;}
+    let combinacionGanadora = verificarGanador(celdas);
+    if(combinacionGanadora){
+      dibujarLineaGanadora(combinacionGanadora);
+      if(contraMaquina) {
+        if(turno === 'X') { partidasGanadas++; localStorage.setItem('tri_ganadas', partidasGanadas); } 
+        else { partidasPerdidas++; localStorage.setItem('tri_perdidas', partidasPerdidas); }
+        actualizarMarcador();
+      }
+      setTimeout(()=>mostrarMensajeFinal(turno,false), 650);
+      return;
+    }
+    
+    if(celdas.every(c=>c!=="")){setTimeout(()=>mostrarMensajeFinal(null,true),400);return;}
     
     turno=(turno==='X')?'O':'X';
     actualizarTurno();
     
-    if(contraMaquina && turno==='O') setTimeout(jugadaMaquinaIA, 400);
+    if(contraMaquina && turno==='O') setTimeout(jugadaMaquinaIA, 450);
   }
 
+  // Lógica Inteligente Adaptable según Dificultad Elegida
   function jugadaMaquinaIA(){
     let movimiento;
 
-    if(contadorJugadas >= 5 && Math.random() < 0.50) {
+    if(dificultad === "novato") {
+      // Movimiento 100% aleatorio
       const vacias = celdas.map((v,i)=>v===""?i:null).filter(v=>v!==null);
       movimiento = vacias[Math.floor(Math.random()*vacias.length)];
-    } else {
+    } 
+    else if(dificultad === "intermedio" && contadorJugadas >= 5 && Math.random() < 0.50) {
+      // Dificultad Adaptativa solicitada: disminuye complejidad a la mitad tras la 5ta jugada
+      const vacias = celdas.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+      movimiento = vacias[Math.floor(Math.random()*vacias.length)];
+    } 
+    else {
+      // Experto o Intermedio en jugadas tempranas: Inteligencia Artificial imbatible (Minimax)
       let mejorPuntaje = -Infinity;
       for(let i=0; i<9; i++) {
         if(celdas[i] === "") {
@@ -705,12 +827,37 @@
 
   function verificarGanador(t){
     const combos=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-    return combos.some(([a,b,c])=>t[a]&&t[a]===t[b]&&t[a]===t[c]);
+    for(let combo of combos) {
+      const [a,b,c] = combo;
+      if(t[a] && t[a]===t[b] && t[a]===t[c]) return combo;
+    }
+    return null;
   }
 
   function verificarGanadorExplicit(t, jugadorSigno) {
     const combos=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     return combos.some(([a,b,c])=>t[a]===jugadorSigno && t[b]===jugadorSigno && t[c]===jugadorSigno);
+  }
+
+  // Dibuja físicamente la línea que cruza las tres celdas usando coordenadas del DOM
+  function dibujarLineaGanadora(combo) {
+    const celdasDom = tablero.children;
+    const primeraCelda = celdasDom[combo[0]].getBoundingClientRect();
+    const ultimaCelda = celdasDom[combo[2]].getBoundingClientRect();
+    const contenedorRect = tablero.getBoundingClientRect();
+
+    const x1 = (primeraCelda.left + primeraCelda.width / 2) - contenedorRect.left;
+    const y1 = (primeraCelda.top + primeraCelda.height / 2) - contenedorRect.top;
+    const x2 = (ultimaCelda.left + ultimaCelda.width / 2) - contenedorRect.left;
+    const y2 = (ultimaCelda.top + ultimaCelda.height / 2) - contenedorRect.top;
+
+    lineaVictoria.setAttribute("x1", x1);
+    lineaVictoria.setAttribute("y1", y1);
+    lineaVictoria.setAttribute("x2", x2);
+    lineaVictoria.setAttribute("y2", y2);
+    lineaVictoria.style.animation = 'none';
+    lineaVictoria.offsetHeight; /* Recalcular layout */
+    lineaVictoria.style.animation = null;
   }
 
   function mostrarMensajeFinal(ganador,empate){
@@ -743,16 +890,20 @@
 
   btnReiniciar.addEventListener('click',(e)=>{ e.stopPropagation(); iniciarJuego(); });
   btnReiniciarFinal.addEventListener('click',(e)=>{ e.stopPropagation(); iniciarJuego(); });
-  btnMenu.addEventListener('click',(e)=>{ e.stopPropagation(); volverMenu(); });
-  btnMenuFinal.addEventListener('click',(e)=>{ e.stopPropagation(); volverMenu(); });
-
-  function volverMenu(){
+  
+  btnMenu.addEventListener('click',(e)=>{ 
+    e.stopPropagation(); 
     mensajeFinal.style.display='none';
-    juego.style.display='none';
-    pantallaInicio.style.display='flex';
-    body.style.backgroundColor = "#000000"; 
+    cambiarPantalla(juego, pantallaInicio);
     renderizarCatalogo();
-  }
+  });
+  
+  btnMenuFinal.addEventListener('click',(e)=>{ 
+    e.stopPropagation(); 
+    mensajeFinal.style.display='none';
+    cambiarPantalla(juego, pantallaInicio);
+    renderizarCatalogo();
+  });
 </script>
 </body>
 </html>
